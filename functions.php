@@ -55,20 +55,22 @@
       /* ==============================================
       ********  //Меню
       =============================================== */
-      // register_nav_menu( 'top_menu', 'Навигация в шапке сайта' );
-      // register_nav_menu( 'top_menu_inner', 'Навигация в шапке сайта (внутренние страницы)' );
+      register_nav_menu( 'header_menu', 'Навигация в шапке сайта' );
 
-      // register_nav_menu( 'bottom_menu', 'Навигация в подвале сайта' );
-      // register_nav_menu( 'bottom_menu_inner', 'Навигация в подвале сайта (внутренние страницы)' );
-
-      // register_nav_menu( 'category_menu', 'Навигация по категориям в подвале сайта' );
+      register_nav_menu( 'footer_menu', 'Навигация в подвале сайта' );
 
       /* ==============================================
       ********  //Размеры картирок
       =============================================== */
-      // add_image_size( 'osnova_about', 470, 626, false);
+      add_image_size( 'osnova_front_start_tablet', 1000, 701, false);
 
-      // add_image_size( 'osnova_docs', 516, 718, false);
+      add_image_size( 'osnova_front_about_tablet', 1000, 560, false);
+
+      add_image_size( 'osnova_article_tablet', 960, 616, false);
+      add_image_size( 'osnova_article_mobile', 300, 250, false);
+
+      add_image_size( 'osnova_article_gallery_tablet', 472, 311, false);
+      add_image_size( 'osnova_article_gallery_mobile', 300, 200, false);
 
       // add_image_size( 'osnova_technics_category_banner', 1600, 890, false);
       // add_image_size( 'osnova_technics_category_banner_mobile', 375, 650, false);
@@ -87,45 +89,45 @@
       ********  //Регистрация кастомных типов постов
       =============================================== */
       function register_custom_post_types () {
-        // Техника
-        // register_post_type( 'technics', [
-        //   'label'  => null,
-        //   'labels' => [
-        //     'name'               => 'Техника', // основное название для типа записи
-        //     'singular_name'      => 'Единица техники', // название для одной записи этого типа
-        //     'add_new'            => 'Добавить единицу техники', // для добавления новой записи
-        //     'add_new_item'       => 'Добавление единицы техники', // заголовка у вновь создаваемой записи в админ-панели.
-        //     'edit_item'          => 'Редактирование единицы техники', // для редактирования типа записи
-        //     'new_item'           => 'Новая единица техники', // текст новой записи
-        //     'view_item'          => 'Смотреть единицу техники', // для просмотра записи этого типа.
-        //     'search_items'       => 'Искать единицу техники в архиве', // для поиска по этим типам записи
-        //     'not_found'          => 'Не найдено', // если в результате поиска ничего не было найдено
-        //     'not_found_in_trash' => 'Не найдено в корзине', // если не было найдено в корзине
-        //     'parent_item_colon'  => '', // для родителей (у древовидных типов)
-        //     'menu_name'          => 'Техника', // название меню
-        //   ],
-        //   'description'         => 'Это наша Техника',
-        //   'public'              => false,
-        //   'publicly_queryable'  => false, // зависит от public
-        //   'exclude_from_search' => true, // зависит от public
-        //   'show_ui'             => true, // зависит от public
-        //   'show_in_nav_menus'   => true, // зависит от public
-        //   'show_in_menu'        => true, // показывать ли в меню адмнки
-        //   'show_in_admin_bar'   => true, // зависит от show_in_menu
-        //   'show_in_rest'        => true, // добавить в REST API. C WP 4.7
-        //   'rest_base'           => null, // $post_type. C WP 4.7
-        //   'menu_position'       => 20,
-        //   'menu_icon'           => 'dashicons-car',
-        //   //'capability_type'   => 'post',
-        //   //'capabilities'      => 'post', // массив дополнительных прав для этого типа записи
-        //   //'map_meta_cap'      => null, // Ставим true чтобы включить дефолтный обработчик специальных прав
-        //   'hierarchical'        => false,
-        //   'supports'            => ['title', 'editor', 'thumbnail', 'page-attributes', 'custom-fields' ], // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
-        //   'taxonomies'          => ['technics_category'],
-        //   'has_archive'         => false,
-        //   'rewrite'             => true,
-        //   'query_var'           => true,
-        // ] );
+        // Товары
+        register_post_type( 'products', [
+          'label'  => null,
+          'labels' => [
+            'name'               => 'Товары', // основное название для типа записи
+            'singular_name'      => 'Товар', // название для одной записи этого типа
+            'add_new'            => 'Добавить товар', // для добавления новой записи
+            'add_new_item'       => 'Добавление товара', // заголовка у вновь создаваемой записи в админ-панели.
+            'edit_item'          => 'Редактирование товара', // для редактирования типа записи
+            'new_item'           => 'Новый товар', // текст новой записи
+            'view_item'          => 'Смотреть товар', // для просмотра записи этого типа.
+            'search_items'       => 'Искать товар в архиве', // для поиска по этим типам записи
+            'not_found'          => 'Не найден товар', // если в результате поиска ничего не было найдено
+            'not_found_in_trash' => 'Не найден товар в корзине', // если не было найдено в корзине
+            'parent_item_colon'  => '', // для родителей (у древовидных типов)
+            'menu_name'          => 'Товары', // название меню
+          ],
+          'description'         => 'Это наши товары',
+          'public'              => true,
+          'publicly_queryable'  => true, // зависит от public
+          'exclude_from_search' => true, // зависит от public
+          'show_ui'             => true, // зависит от public
+          'show_in_nav_menus'   => true, // зависит от public
+          'show_in_menu'        => true, // показывать ли в меню адмнки
+          'show_in_admin_bar'   => true, // зависит от show_in_menu
+          'show_in_rest'        => true, // добавить в REST API. C WP 4.7
+          'rest_base'           => null, // $post_type. C WP 4.7
+          'menu_position'       => 20,
+          'menu_icon'           => 'dashicons-cart',
+          //'capability_type'   => 'post',
+          //'capabilities'      => 'post', // массив дополнительных прав для этого типа записи
+          //'map_meta_cap'      => null, // Ставим true чтобы включить дефолтный обработчик специальных прав
+          'hierarchical'        => false,
+          'supports'            => ['title', 'editor', 'thumbnail', 'page-attributes', 'custom-fields' ], // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
+          'taxonomies'          => ['products-category', 'products-tag'],
+          'has_archive'         => false,
+          'rewrite'             => true,
+          'query_var'           => true,
+        ] );
       }   
       
       register_custom_post_types();
@@ -134,43 +136,81 @@
       ********  //Регистрация кастомных таксономий 
       =============================================== */
       function register_custom_taxonomy () {
-        // Категории техники
-        // register_taxonomy( 'technics_category', [ 'technics' ], [ 
-        //   'label'                 => '', // определяется параметром $labels->name
-        //   'labels'                => [
-        //     'name'              => 'Категории техники',
-        //     'singular_name'     => 'Категория техники',
-        //     'search_items'      => 'Найти категорию',
-        //     'all_items'         => 'Все категории',
-        //     'view_item '        => 'Посмотреть категорию',
-        //     'parent_item'       => 'Родительская категория',
-        //     'parent_item_colon' => 'Родительская категория:',
-        //     'edit_item'         => 'Редактировать категорию',
-        //     'update_item'       => 'Обновить категорию',
-        //     'add_new_item'      => 'Добавить новую категорию',
-        //     'new_item_name'     => 'Имя новой категории',
-        //     'menu_name'         => 'Категории техники',
-        //   ],
-        //   'description'           => 'Категории техники', // описание таксономии
-        //   'public'                => true,
-        //   'publicly_queryable'    => true, // равен аргументу public
-        //   // 'show_in_nav_menus'     => true, // равен аргументу public
-        //   'show_ui'               => true, // равен аргументу public
-        //    'show_in_menu'          => true, // равен аргументу show_ui
-        //   // 'show_tagcloud'         => true, // равен аргументу show_ui
-        //   // 'show_in_quick_edit'    => null, // равен аргументу show_ui
-        //   'hierarchical'          => true,
+        // Категории товаров
+        register_taxonomy( 'products-category', [ 'products' ], [ 
+          'label'                 => '', // определяется параметром $labels->name
+          'labels'                => [
+            'name'              => 'Категории товаров',
+            'singular_name'     => 'Категория товаров',
+            'search_items'      => 'Найти категорию',
+            'all_items'         => 'Все категории',
+            'view_item '        => 'Посмотреть категорию',
+            'parent_item'       => 'Родительская категория',
+            'parent_item_colon' => 'Родительская категория:',
+            'edit_item'         => 'Редактировать категорию',
+            'update_item'       => 'Обновить категорию',
+            'add_new_item'      => 'Добавить новую категорию',
+            'new_item_name'     => 'Имя новой категории',
+            'menu_name'         => 'Категории товаров',
+          ],
+          'description'           => 'Категории товаров фабрики "Основа"', // описание таксономии
+          'public'                => true,
+          'publicly_queryable'    => true, // равен аргументу public
+          // 'show_in_nav_menus'     => true, // равен аргументу public
+          'show_ui'               => true, // равен аргументу public
+           'show_in_menu'          => true, // равен аргументу show_ui
+          // 'show_tagcloud'         => true, // равен аргументу show_ui
+          // 'show_in_quick_edit'    => null, // равен аргументу show_ui
+          'hierarchical'          => true,
       
-        //   'rewrite'               => true,
-        //   //'query_var'             => $taxonomy, // название параметра запроса
-        //   // 'capabilities'          => array(),
-        //   // 'meta_box_cb'           => null, // html метабокса. callback: `post_categories_meta_box` или `post_tags_meta_box`. false — метабокс отключен.
-        //   // 'show_admin_column'     => false, // авто-создание колонки таксы в таблице ассоциированного типа записи. (с версии 3.5)
-        //   'show_in_rest'          => true, // добавить в REST API
-        //   // 'rest_base'             => null, // $taxonomy
-        //   // '_builtin'              => false,
-        //   //'update_count_callback' => '_update_post_term_count',
-        // ] );
+          'rewrite'               => true,
+          //'query_var'             => $taxonomy, // название параметра запроса
+          // 'capabilities'          => array(),
+          // 'meta_box_cb'           => null, // html метабокса. callback: `post_categories_meta_box` или `post_tags_meta_box`. false — метабокс отключен.
+          // 'show_admin_column'     => false, // авто-создание колонки таксы в таблице ассоциированного типа записи. (с версии 3.5)
+          'show_in_rest'          => true, // добавить в REST API
+          // 'rest_base'             => null, // $taxonomy
+          // '_builtin'              => false,
+          //'update_count_callback' => '_update_post_term_count',
+        ] );
+
+        // Теги товаров
+        register_taxonomy( 'products-tag', [ 'products' ], [ 
+          'label'                 => '', // определяется параметром $labels->name
+          'labels'                => [
+            'name'              => 'Теги товаров',
+            'singular_name'     => 'Тег товаров',
+            'search_items'      => 'Найти тег',
+            'all_items'         => 'Все теги',
+            'view_item '        => 'Посмотреть тег',
+            'parent_item'       => 'Родительский тег',
+            'parent_item_colon' => 'Родительский тег:',
+            'edit_item'         => 'Редактировать тег',
+            'update_item'       => 'Обновить тег',
+            'add_new_item'      => 'Добавить новый тег',
+            'new_item_name'     => 'Имя нового тега',
+            'menu_name'         => 'Теги товаров',
+          ],
+          'description'           => 'Теги товаров фабрики "Основа"', // описание таксономии
+          'public'                => true,
+          'publicly_queryable'    => true, // равен аргументу public
+          // 'show_in_nav_menus'     => true, // равен аргументу public
+          'show_ui'               => true, // равен аргументу public
+           'show_in_menu'          => true, // равен аргументу show_ui
+          // 'show_tagcloud'         => true, // равен аргументу show_ui
+          // 'show_in_quick_edit'    => null, // равен аргументу show_ui
+          'hierarchical'          => false,
+      
+          'rewrite'               => true,
+          //'query_var'             => $taxonomy, // название параметра запроса
+          // 'capabilities'          => array(),
+          // 'meta_box_cb'           => null, // html метабокса. callback: `post_categories_meta_box` или `post_tags_meta_box`. false — метабокс отключен.
+          // 'show_admin_column'     => false, // авто-создание колонки таксы в таблице ассоциированного типа записи. (с версии 3.5)
+          'show_in_rest'          => true, // добавить в REST API
+          // 'rest_base'             => null, // $taxonomy
+          // '_builtin'              => false,
+          //'update_count_callback' => '_update_post_term_count',
+        ] );
       }   
     
       register_custom_taxonomy();
