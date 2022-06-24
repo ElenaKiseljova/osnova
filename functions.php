@@ -6,9 +6,9 @@
   
   // Styles theme
   function osnova_styles () {    
-    // wp_enqueue_style('googleapis-fonts-style', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    wp_enqueue_style('googleapis-fonts-style', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
     // wp_enqueue_style('swiper-style', get_template_directory_uri() . '/assets/css/libs/swiper-bundle.min.css');
-    // wp_enqueue_style('osnova-style', get_stylesheet_uri());
+    wp_enqueue_style('osnova-style', get_stylesheet_uri());
   }
 
   // Scripts theme
@@ -124,7 +124,7 @@
           'hierarchical'        => false,
           'supports'            => ['title', 'editor', 'thumbnail', 'page-attributes', 'custom-fields' ], // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
           'taxonomies'          => ['products-category', 'products-tag'],
-          'has_archive'         => false,
+          'has_archive'         => true,
           'rewrite'             => true,
           'query_var'           => true,
         ] );
@@ -214,8 +214,45 @@
       }   
     
       register_custom_taxonomy();
+
+      /* ==============================================
+      ********  //ACF опциональные страницы
+      =============================================== */
+      function osnova_create_acf_pages() {
+        if(function_exists('acf_add_options_page')) {
+          acf_add_options_page(array(
+            'page_title' 	=> 'Настройки для темы Osnova',
+            'menu_title'	=> 'Настройки для темы Osnova',
+            'menu_slug' 	=> 'osnova-settings',
+            'capability'	=> 'edit_posts',
+            'icon_url' => 'dashicons-admin-settings',
+            'position' => 23,
+            'redirect'		=> false,
+          ));
+        }    
+      }
+
+      osnova_create_acf_pages();
     }  
   endif;
+
+  /* ==============================================
+  ********  //Фильтр polylang для добавления 
+  ********  //перевоыдов непубликуемым таксономиям
+  =============================================== */
+
+  add_filter( 'pll_get_taxonomies', 'add_tax_to_pll', 10, 2 );
+  
+  function add_tax_to_pll( $taxonomies, $is_settings ) {
+      if ( $is_settings ) {
+        
+      } else {
+        $taxonomies['products-category'] = 'products-category';
+        $taxonomies['products-tag'] = 'products-tag';
+      }
+
+      return $taxonomies;
+  }
 
   // Customizer
   // add_action( 'customize_register', 'osnova_customizer' ); 
