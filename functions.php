@@ -18,16 +18,16 @@
       // wp_enqueue_script('remove-active-class-elements-script', get_template_directory_uri() . '/assets/js/remove-active-class-elements.min.js', $deps = array(), $ver = null, $in_footer = true );
       // wp_enqueue_script('popup-script', get_template_directory_uri() . '/assets/js/popup.min.js', $deps = array(), $ver = null, $in_footer = true );
       // wp_enqueue_script('main-script', get_template_directory_uri() . '/assets/js/script.min.js', $deps = array(), $ver = null, $in_footer = true );
-      // wp_enqueue_script('form-script', get_template_directory_uri() . '/assets/js/form.min.js', $deps = array(), $ver = null, $in_footer = true );
+      wp_enqueue_script('additional-script', get_template_directory_uri() . '/assets/js/additional.js', $deps = array(), $ver = null, $in_footer = true );
     }
     
     // AJAX
-    // $args = array(
-    //   'url' => admin_url('admin-ajax.php'),
-    //   'nonce' => wp_create_nonce('osnova_nonce'),
-    // );
+    $args = array(
+      'url' => admin_url('admin-ajax.php'),
+      'nonce' => wp_create_nonce('additional-script.js_nonce'),
+    );
 
-    // wp_localize_script( 'form-script', 'osnova_ajax', $args);   
+    wp_localize_script( 'additional-script', 'osnova_ajax', $args);   
   }
 
   // After setup
@@ -404,4 +404,255 @@
 
   //   wp_die();
   // }
+
+  /* ==============================================
+  ********  //Ajax
+  =============================================== */
+  if( wp_doing_ajax() ) {
+    add_action('wp_ajax_osnova_ajax_get_products_list_html', 'osnova_ajax_get_products_list_html');
+    add_action('wp_ajax_nopriv_osnova_ajax_get_products_list_html', 'osnova_ajax_get_products_list_html'); 
+  }
+
+  function osnova_ajax_get_products_list_html()
+  {
+    try {
+      // Первым делом проверяем параметр безопасности
+      check_ajax_referer('additional-script.js_nonce', 'security');
+
+      $taxonomy = ($_POST['taxonomy'] && !empty($_POST['taxonomy'])) ? $_POST['taxonomy'] : null;
+      $term_id = ($_POST['term_id'] && !empty($_POST['term_id'])) ? $_POST['term_id'] : null;
+
+      $posts_per_page = isset($_POST['posts_per_page']) ? (int) $_POST['posts_per_page'] : 9;
+      $paged = isset($_POST['paged']) ? (int) $_POST['paged'] : 1;
+
+      $replace = (isset($_POST['replace']) && $_POST['replace'] === '0') ? false : true;
+
+      $response = [
+        'post' => $_POST,
+      ];
+
+      ob_start();
+
+      osnova_get_products_list_html( $posts_per_page, $paged, $taxonomy, $term_id, $replace );
+  
+      $response['content'] = ob_get_contents();
+  
+      ob_clean();   
+  
+      wp_send_json_success( $response );
+    } catch (Throwable $th) {
+      wp_send_json_error( $th );
+    }  
+
+    die();
+  }
+
+  /* ==============================================
+  ********  //Получение списка Товаров
+  =============================================== */
+  function osnova_get_products_list_html($posts_per_page = 9, $paged = 1, $taxonomy = null, $term_id = null, $replace = true) 
+  {
+    $args = [
+      'post_type' => 'products',
+      'post_status' => 'publish',
+      'order' => 'ASC',
+      'orderby' => 'menu_order',
+      'posts_per_page' => $posts_per_page,
+      'paged' => $paged,
+    ];
+
+    if ( !is_null($taxonomy) && !is_null($term_id) ) {
+      $args['tax_query'][] = [
+        'taxonomy' => (string) $taxonomy,
+        'field' => 'term_id',
+        'terms' => (int) $term_id,
+      ];
+    }
+
+    $query = new WP_Query( $args ); 
+
+    if ( $query->have_posts() ) {
+      if ( $replace ) {
+        ?>
+          <ul class="latest__cards" id="more-list">                
+            <?php 
+              while ( $query->have_posts() ) {
+                $query->the_post();
+                
+                // get_template_part( 'templates/post', 'card' );
+                
+                echo '<a href="' . get_permalink( get_the_ID(  ) ). '">' . get_the_title(  ) . '</a><br />';
+              }
+            ?>
+          </ul>
+          
+          <?php if ($query->max_num_pages > 1) : ?>
+            <?php if ($query->max_num_pages > $paged) : ?>
+              <button id="more-button" data-max-num-pages="<?= $query->max_num_pages; ?>" data-post-type="products"><?= __( 'Больше', 'osnova' ); ?></button>
+            <?php endif; ?>          
+
+            <div class="latest__pagination">
+              <?php 
+                $max_num_pages = $query->max_num_pages;
+
+                $attr = [
+                  'prev' => false,
+                  'next' => false
+                ];
+
+                osnova_get_pagination_html($max_num_pages, $paged, $attr);
+              ?>
+            </div>
+          <?php endif; ?>       
+        <?php 
+      } else {
+        while ( $query->have_posts() ) {
+          $query->the_post();
+          
+          // get_template_part( 'templates/post', 'card' );
+          
+          echo '<a href="' . get_permalink( get_the_ID(  ) ). '">' . get_the_title(  ) . '</a><br />';
+        }
+      } 
+
+      wp_reset_postdata();
+    } else {
+      ?>
+        <p class="latest__empty">
+          <?= __( 'По вашему запросу результатов не найдено', 'osnova' ); ?>
+        </p>
+      <?php
+    } 
+  }
+
+  function osnova_get_pagination_html( $max_num_pages, $paged, $attr = [] ) 
+  {
+    $show = isset($attr['show']) ? (int) $attr['show'] : 5;
+    $left = isset($attr['left']) ? (int) $attr['left'] : 3;
+    $center = isset($attr['center']) ? (int) $attr['center'] : 3;
+    $right = isset($attr['right']) ? (int) $attr['right'] : 4;
+
+    $prev = isset($attr['prev']) ? $attr['prev'] : true;
+    $next = isset($attr['next']) ? $attr['next'] : true;
+
+    $prev_text = isset($attr['prev_text']) ? $attr['prev_text'] : __( 'Назад', 'osnova' );
+    $next_text = isset($attr['next_text']) ? $attr['next_text'] : __( 'Вперёд', 'osnova' );
+    ?>          
+      <div class="pagination">
+        <ul class="pagination__list">
+          <?php if ($prev) : ?>
+            <li class="pagination__item pagination__item--prev">
+              <a href="#catalog-ajax" class="pagination__button pagination__button--prev <?= ($paged === 1) ? 'disabled' : ''; ?>"  data-paged="<?= $paged - 1; ?>">
+                <svg width="9" height="14">
+                  <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#pagination-prev"></use>
+                </svg>
+
+                <?= $prev_text; ?>
+              </a>
+            </li>
+          <?php endif; ?>          
+
+          <?php 
+            if ($max_num_pages <= $show) {
+              for ($i=1; $i <= $max_num_pages; $i++) { 
+                ?>
+                  <li class="pagination__item">
+                    <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ($i === 1) ? 'first' : ($i === $max_num_pages ? 'last' : ''); ?> <?= ($i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
+                      <?= $i; ?>
+                    </a>
+                  </li>
+                <?php
+              }
+            } else if ($max_num_pages > $show) {
+              if ($paged <= $left) {
+                for ($i=1; $i <= $left; $i++) {                  
+                  ?>
+                    <li class="pagination__item">
+                      <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ($i === 1) ? 'first' : ''; ?> <?= ($i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
+                        <?= $i; ?>
+                      </a>
+                    </li>
+                  <?php
+                }
+                ?>
+                  <li class="pagination__item pagination__item--separate">
+                    ...
+                  </li>
+                  <li class="pagination__item">
+                    <a href="#catalog-ajax" class="pagination__button pagination__button--page last" data-paged="<?= $max_num_pages; ?>">
+                      <?= $max_num_pages; ?>
+                    </a>
+                  </li>
+                <?php
+              } else if ($paged > $left && $paged <= ($max_num_pages - $right)) {
+                ?>
+                  <li class="pagination__item">
+                    <a href="#catalog-ajax" class="pagination__button pagination__button--page" data-paged="1">
+                      1
+                    </a>
+                  </li>
+                  <li class="pagination__item pagination__item--separate">
+                    ...
+                  </li>
+                <?php
+                $center_half = floor($center/2);
+                for ($i= ($paged - $center_half); $i <= ($paged + $center_half); $i++) {                  
+                  ?>
+                    <li class="pagination__item">
+                      <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ((int)$i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
+                        <?= $i; ?>
+                      </a>
+                    </li>
+                  <?php
+                }
+                ?>
+                  <li class="pagination__item pagination__item--separate">
+                    ...
+                  </li>
+                  <li class="pagination__item">
+                    <a href="#catalog-ajax" class="pagination__button pagination__button--page" data-paged="<?= $max_num_pages; ?>1">
+                      <?= $max_num_pages; ?>
+                    </a>
+                  </li>                    
+                <?php
+              } else if ($paged > $left && $paged > ($max_num_pages - $right)) {
+                ?>
+                <li class="pagination__item">
+                  <a href="#catalog-ajax" class="pagination__button pagination__button--page" data-paged="1">
+                    1
+                  </a>
+                </li>
+                <li class="pagination__item pagination__item--separate">
+                  ...
+                </li>
+                <?php
+                for ($i= ($max_num_pages - $right + 1); $i <= $max_num_pages; $i++) {                  
+                  ?>
+                    <li class="pagination__item">
+                      <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ($i === $max_num_pages) ? 'last' : ''; ?> <?= ($i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
+                        <?= $i; ?>
+                      </a>
+                    </li>
+                  <?php
+                }
+              }                
+            }              
+          ?>
+          
+          <?php if ($next) : ?>
+            <li class="pagination__item pagination__item--next">
+              <a href="#catalog-ajax" class="pagination__button pagination__button--next <?= ($paged === $max_num_pages) ? 'disabled' : ''; ?>" data-paged="<?= $paged + 1; ?>">
+                <?= $next_text; ?>  
+                <svg width="9" height="14">
+                  <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#pagination-next"></use>
+                </svg>
+              </a>
+            </li>
+          <?php endif; ?>          
+        </ul>
+      </div>          
+    <?php
+  }
+
+  
 ?>

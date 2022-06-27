@@ -1,0 +1,237 @@
+(() => {
+  'use strict';
+
+  /* Плавный скролл к элементам */
+  const scrollSmooth = (container = document) => {
+    try {
+      const hrefAttributes = container.querySelectorAll("a[href*='#']");
+
+      hrefAttributes.forEach((item) => {
+        const href = item.href.split('#');
+
+        const CURRENT_URL = window.location.origin + window.location.pathname;
+
+        if (href[0] === CURRENT_URL) {
+          item?.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const scrollTarget = document.getElementById(href[1]);
+
+            const topOffset = 70;
+            const elementPosition = scrollTarget.getBoundingClientRect().top;
+            const offsetPosition = elementPosition - topOffset;
+
+            window.scrollBy({
+              top: offsetPosition,
+              behavior: 'smooth',
+            });
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Ф-я удаления активного класса у массива элементов
+  const removeActiveClass = (elements, className = 'active') => {
+    elements.forEach((element, i) => {
+      if (element.classList.contains(className)) {
+        element.classList.remove(className);
+      }
+    });
+  };
+
+  const additional = {
+    // Кнопка "Больше"
+    moreButton() {
+      try {
+        const moreButton = document.querySelector('#more-button');
+        const moreList = document.querySelector('#more-list');
+
+        if (moreButton && moreList) {
+          const postType = moreButton.dataset.postType;
+          let currentPage = window.paged ? parseInt(window.paged, 10) : 1;
+          const maxNumPages = moreButton.dataset.maxNumPages ? parseInt(moreButton.dataset.maxNumPages, 10) : 1;
+
+          if (postType) {
+            const callback = () => {
+              if (maxNumPages === currentPage) {
+                moreButton.remove();
+              }
+            };
+
+            moreButton.addEventListener('click', () => {
+              additional.getAjaxMore(++currentPage, moreList, postType, callback);
+            });
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    // Пагинация
+    paginationActivate() {
+      try {
+        const paginationButtons = document.querySelectorAll('.pagination__button');
+
+        let paginationPrev, paginationNext;
+
+        paginationButtons.forEach((paginationButton) => {
+          if (paginationButton.classList.contains('pagination__button--prev')) {
+            paginationPrev = paginationButton;
+          }
+
+          if (paginationButton.classList.contains('pagination__button--next')) {
+            paginationNext = paginationButton;
+          }
+
+          paginationButton.addEventListener('click', (e) => {
+            if (paginationButton.classList.contains('pagination__button--page') && !paginationButton.classList.contains('current')) {
+              removeActiveClass(paginationButtons, 'current');
+
+              if (paginationPrev && paginationButton.classList.contains('first')) {
+                paginationPrev.classList.add('disabled');
+              } else if (paginationPrev && !paginationButton.classList.contains('first')) {
+                paginationPrev.classList.remove('disabled');
+              }
+
+              if (paginationNext && paginationButton.classList.contains('last')) {
+                paginationNext.classList.add('disabled');
+              } else if (paginationNext && !paginationButton.classList.contains('last')) {
+                paginationNext.classList.remove('disabled');
+              }
+
+              paginationButton.classList.add('current');
+
+
+            } else if (paginationButton.classList.contains('pagination__button--prev') || paginationButton.classList.contains('pagination__button--next')) {
+              const toPaged = paginationButton.dataset.paged;
+              const toPagedButton = [].find.call(paginationButtons, (button) => button.classList.contains('pagination__button--page') && button.dataset.paged === toPaged);
+
+              if (toPagedButton) {
+                removeActiveClass(paginationButtons, 'current');
+
+                toPagedButton.classList.add('current');
+              }
+            }
+
+            additional.getPage(paginationButton);
+          });
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    // Получение номера страницы
+    getPage(button) {
+      let paged = button.dataset.paged;
+
+      paged = paged ? paged : 1;
+
+      window.paged = paged;
+
+      additional.getAjaxPage(paged);
+    },
+    // Запрос на получение Товаров с определенной страницы
+    getAjaxPage(paged) {
+      const dataAjaxContainer = document.querySelector('#catalog-ajax');
+
+      if (dataAjaxContainer) {
+        let dataForm = new FormData();
+
+        dataForm.append('action', 'osnova_ajax_get_products_list_html');
+        dataForm.append('security', osnova_ajax.nonce);
+
+        dataForm.append('posts_per_page', window.postPerpage);
+        dataForm.append('paged', paged);
+        dataForm.append('taxonomy', window.taxonomy);
+        dataForm.append('term_id', window.term_id);
+
+        additional.onAjax(dataForm, dataAjaxContainer);
+      }
+    },
+    // Запрос на получение Товаров со следующей страницы и добавление ко списку
+    getAjaxMore(paged, dataAjaxContainer, postType, callback) {
+      let dataForm = new FormData();
+
+      if (postType === 'products') {
+        dataForm.append('action', 'osnova_ajax_get_products_list_html');
+      }
+
+      dataForm.append('security', osnova_ajax.nonce);
+
+      dataForm.append('posts_per_page', window.postPerpage);
+      dataForm.append('paged', paged);
+      dataForm.append('taxonomy', window.taxonomy);
+      dataForm.append('term_id', window.term_id);
+
+      dataForm.append('replace', 0);
+
+      additional.onAjax(dataForm, dataAjaxContainer, callback, false);
+    },
+    // Отправка на сервер данных для получения списка Видео
+    onAjax(dataForm, dataAjaxContainer, сallback, replace = true) {
+      try {
+        const url = osnova_ajax.url;
+
+        dataAjaxContainer.classList.add('sending');
+
+        fetch(url, {
+          method: 'POST',
+          credentials: 'same-origin',
+          body: dataForm
+        })
+          .then((response) => response.json())
+          .then((response) => {
+            if (response.success === true) {
+              console.log(replace);
+              if (replace) {
+                dataAjaxContainer.innerHTML = response.data.content;
+
+                // Переинициализация ф-й для ноыого контента
+                if (!сallback) {
+                  additional.paginationActivate();
+
+                  additional.moreButton();
+
+                  scrollSmooth(dataAjaxContainer);
+                } else if (typeof сallback === 'function') {
+                  сallback();
+                }
+              } else {
+                dataAjaxContainer.innerHTML += response.data.content;
+
+                if (typeof сallback === 'function') {
+                  сallback();
+                }
+              }
+
+              console.log('Успех:', response);
+            } else {
+              console.error('Ошибка:', response);
+            }
+
+            dataAjaxContainer.classList.remove('sending');
+          })
+          .catch((error) => {
+            console.error('Ошибка:', error);
+
+            dataAjaxContainer.classList.remove('sending');
+          });
+      } catch (error) {
+        console.error('Ошибка:', error);
+
+        dataAjaxContainer.classList.remove('sending');
+      }
+    },
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    scrollSmooth();
+
+    additional.paginationActivate();
+
+    additional.moreButton();
+  });
+})();
