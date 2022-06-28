@@ -1,5 +1,7 @@
 <?php 
   /* osnova */
+
+  define( 'NOT_FOUND', get_template_directory_uri(  ) . '/assets/img/not-found.jpg' );
   
   add_action('wp_enqueue_scripts', 'osnova_styles', 3);
   add_action('wp_enqueue_scripts', 'osnova_scripts', 5);
@@ -7,17 +9,15 @@
   // Styles theme
   function osnova_styles () {    
     wp_enqueue_style('googleapis-fonts-style', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
-    // wp_enqueue_style('swiper-style', get_template_directory_uri() . '/assets/css/libs/swiper-bundle.min.css');
+    
     wp_enqueue_style('osnova-style', get_stylesheet_uri());
   }
 
   // Scripts theme
   function osnova_scripts () {    
     if (!is_404(  )) {
-      // wp_enqueue_script('swiper-script', get_template_directory_uri() . '/assets/js/libs/swiper-bundle.min.js', $deps = array(), $ver = null, $in_footer = true );
-      // wp_enqueue_script('remove-active-class-elements-script', get_template_directory_uri() . '/assets/js/remove-active-class-elements.min.js', $deps = array(), $ver = null, $in_footer = true );
-      // wp_enqueue_script('popup-script', get_template_directory_uri() . '/assets/js/popup.min.js', $deps = array(), $ver = null, $in_footer = true );
-      // wp_enqueue_script('main-script', get_template_directory_uri() . '/assets/js/script.min.js', $deps = array(), $ver = null, $in_footer = true );
+      // wp_enqueue_script('swiper-script', get_template_directory_uri() . '/assets/swiper-bundle.min.js', $deps = array(), $ver = null, $in_footer = true );
+      wp_enqueue_script('main-script', get_template_directory_uri() . '/assets/js/script.min.js', $deps = array(), $ver = null, $in_footer = true );
       wp_enqueue_script('additional-script', get_template_directory_uri() . '/assets/js/additional.js', $deps = array(), $ver = null, $in_footer = true );
     }
     
@@ -65,6 +65,7 @@
       add_image_size( 'osnova_front_start_tablet', 1000, 701, false);
 
       add_image_size( 'osnova_front_about_tablet', 1000, 560, false);
+      add_image_size( 'osnova_front_about_mobile', 320, 179, false);
 
       add_image_size( 'osnova_article_tablet', 960, 616, false);
       add_image_size( 'osnova_article_mobile', 300, 250, false);
@@ -313,97 +314,47 @@
    /* ==============================================
   ********  //Класс для пунктов меню
   =============================================== */
-  // add_filter( 'nav_menu_css_class', 'osnova_change_menu_item_css_classes', 10, 4 );
-  // function osnova_change_menu_item_css_classes( $classes, $item, $args, $depth ) {
-  // 	if( $args->theme_location === 'top_menu' || $args->theme_location === 'top_menu_inner' ){
-  //     if ($depth === 0) {
-  //       $classes[] = 'nav_list_item';
-  //     } else if ($depth === 1) {
-  //       $classes[] = 'drop_menu_item';
-  //     }      
-  // 	}
+  add_filter( 'nav_menu_css_class', 'osnova_change_menu_item_css_classes', 10, 4 );
+  function osnova_change_menu_item_css_classes( $classes, $item, $args, $depth ) {
+  	if( $args->theme_location === 'header_menu' ){
+      if ($depth === 0) {
+        $classes[] = 'header__item';
+      } else if ($depth === 1) {
+        $classes[] = 'sub-menu__item';
+      }      
+  	}
 
-  //   if ($args->theme_location === 'bottom_menu' || $args->theme_location === 'bottom_menu_inner' || $args->theme_location === 'category_menu') {
-  //     $classes[] = 'footer__item';
-  //   }
-
-  // 	return $classes;
-  // }
+  	return $classes;
+  }
 
   /* ==============================================
-  ********  //Отправка письма на мейл
+  ********  //Класс форм
   =============================================== */
+  add_filter( 'wpcf7_form_class_attr', 'osnova_filter_cf7_class' );
 
-  // add_action('wp_ajax_osnova_sendmail', 'osnova_sendmail');
-  // add_action('wp_ajax_nopriv_osnova_sendmail', 'osnova_sendmail');
+  function osnova_filter_cf7_class( $class ){
+    $class .= ' form';
 
-  // function osnova_sendmail () {
-  //   check_ajax_referer('osnova_nonce', 'security');
+    return $class;
+  }
 
-  //   if (isset($_POST['email']) && empty($_POST['email'])) {
-  //     $response = [
-  //       'name' => 'email',
-  //       'error' => __('Укажите эл.  почту', 'design')
-  //     ];
-      
-  //     wp_send_json_error( $response );
-  
-  //     wp_die();
-  //   }
-    
-  //   if (isset($_POST['name']) && empty($_POST['name'])) {   
-  //     $response = [
-  //       'name' => 'name',
-  //       'error' => __('Укажите имя', 'design')
-  //     ];
-      
-  //     wp_send_json_error( $response );
-  
-  //     wp_die();
-  //   }
-    
-  //   $contactSubject = isset($_POST['subject']) ? esc_html( $_POST['subject'] ) : __('Контактная форма', 'design');
-  //   $contactName = isset($_POST['name']) ? ('<p>Имя - ' . esc_html( $_POST['name'] ) . '</p>') : '';
-  //   $contactEmail = isset($_POST['email']) ? ('<p>Эл. почта - ' . esc_html( $_POST['email'] ) . '</p>') : '';
-  //   $contactMessage = isset($_POST['message']) ? ('<p>Сообщение - ' . esc_html( $_POST['message'] ) . '</p>') : '';
-    
-  //   $contactMail = $contactName . $contactEmail . $contactMessage;
+  /* ==============================================
+  ********  //Отключение автозаполнения полей CF7
+  =============================================== */
+  add_filter( 'wpcf7_form_elements', 'osnova_wpcf7_form_elements' );
+  function osnova_wpcf7_form_elements( $content ) {
+    $str_pos = strpos( $content, 'id="name-1"' );
+    if ($str_pos) {
+      $content = substr_replace( $content, ' autocomplete="both" autocomplete="off" ', $str_pos, 0 );
+    }      
 
-  //   $dev_mail = 'e.a.kiseljova@gmail.com'; 
-  //   // разработка
-  //   // $to = (isset($_POST['mailto']) && !empty($_POST['mailto'])) ? 
-  //   //   [esc_html( $_POST['mailto'] ), $dev_mail] : 
-  //   //   ((get_option('admin_email') !== $dev_mail) ? 
-  //   //   [get_option('admin_email'), $dev_mail] : 
-  //   //   get_option('admin_email'));
-    
-  //   // продакшн
-  //   $to = (isset($_POST['mailto']) && !empty($_POST['mailto'])) ? 
-  //     [esc_html( $_POST['mailto'] ), get_option('admin_email')] : get_option('admin_email');
+    $str_pos = strpos( $content, 'id="tel"' );
+    if ($str_pos) {
+      $content = substr_replace( $content, ' autocomplete="both" autocomplete="off" ', $str_pos, 0 );
+    }    
 
-  //   $site_name = 'From: ' . get_bloginfo( 'name' ) . ' <' . get_option('admin_email') . '>';
-
-  //   // удалим фильтры, которые могут изменять заголовок $headers
-  //   remove_all_filters( 'wp_mail_from' );
-  //   remove_all_filters( 'wp_mail_from_name' );
-
-  //   $headers = array(
-  //     $site_name,
-  //     'content-type: text/html',
-  //   );
-
-  //   wp_mail( $to, $contactSubject, $contactMail, $headers );
-
-  //   $response = [
-  //     'post' => $_POST,
-  //     'mail' => $contactMail,
-  //     'mailto' => $to
-  //   ];
-
-  //   wp_send_json_success($response);
-
-  //   wp_die();
-  // }
+    return $content;
+  }
 
   /* ==============================================
   ********  //Ajax

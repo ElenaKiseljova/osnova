@@ -41,7 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
     headerSubList.forEach((item, i) => {
         item.addEventListener("click", () => {
             const wrap = item.childNodes[1];
-            if (wrap.classList.contains("header__wrap")) {
+            console.log(wrap)
+            if (item.classList.contains("menu-item-has-children") && document.documentElement.clientWidth <= 992) {
                 item.classList.toggle("header__item--open")
             }
         })
@@ -54,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // })
     if(document.documentElement.clientWidth >=992){
         filterContent?.remove();
+
     }
 
     let filterMobile = document.querySelectorAll(".filter__header");
@@ -231,6 +233,18 @@ document.addEventListener("DOMContentLoaded", function () {
             prevEl: ".slider__prev--article",
         },
     })
+
+
+
+    let sliderSlides = document.querySelectorAll(".js-slide");
+    for (let i = 0; i < sliderSlides.length; i++) {
+        let swiperSlide = sliderSlides[i];
+        swiperSlide.classList.add("cursor-slide")
+    }
+
+
+
+
 })
 document.addEventListener("DOMContentLoaded",(function(){console.log("DOM fully loaded and parsed")}));
 /**

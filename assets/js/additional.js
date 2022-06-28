@@ -1,6 +1,23 @@
 (() => {
   'use strict';
 
+  // Чекбокс в форме
+  const termsInput = document.querySelector('#terms');
+
+  if (termsInput) {
+    termsInput.addEventListener('change', () => {
+      const termsInputLabel = termsInput.closest('label');
+
+      if (termsInputLabel) {
+        if (termsInput.checked) {
+          termsInputLabel.classList.add('checked');
+        } else {
+          termsInputLabel.classList.remove('checked');
+        }
+      }
+    });
+  }
+
   /* Плавный скролл к элементам */
   const scrollSmooth = (container = document) => {
     try {
@@ -17,14 +34,16 @@
 
             const scrollTarget = document.getElementById(href[1]);
 
-            const topOffset = 70;
-            const elementPosition = scrollTarget.getBoundingClientRect().top;
-            const offsetPosition = elementPosition - topOffset;
+            if (scrollTarget) {
+              const topOffset = 0;
+              const elementPosition = scrollTarget.getBoundingClientRect().top;
+              const offsetPosition = elementPosition - topOffset;
 
-            window.scrollBy({
-              top: offsetPosition,
-              behavior: 'smooth',
-            });
+              window.scrollBy({
+                top: offsetPosition,
+                behavior: 'smooth',
+              });
+            }
           });
         }
       });

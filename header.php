@@ -1,29 +1,59 @@
-<!DOCTYPE html>
-<html lang="<?= function_exists( 'pll_current_language' ) ? pll_current_language() : 'ru'; ?>">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <?php
-      wp_head();
-    ?>
-  </head>
-  <body>
+<?php 
+  $frontpage_id = get_option( 'page_on_front' );
+  
+  $phone = get_field( 'phone', $frontpage_id ) ?? [];
+?>
 
-    <?php 
-      // Лого из кастомайзера
-      // $logo_footer = get_theme_mod( 'logo_footer' ) ?? '';
-      // $logo_header = get_theme_mod( 'logo_header' ) ?? '';            
-    ?>
-    <!-- <a href="<?= get_bloginfo( 'url' ); ?>" class="header__logo">
-      <img src="<?= $logo_header; ?>" alt="<?= get_bloginfo( 'name' ); ?>" />
-    </a>
+<?php 
+  get_template_part( 'templates/head' );
+?>
 
-    <a href="<?= get_bloginfo( 'url' ); ?>" class="header__logo header__logo--blue">
-      <img src="<?= $logo_footer; ?>" alt="<?= get_bloginfo( 'name' ); ?>" />
-    </a> -->
+<header class="header">
+  <div class="container header__container">        
+    <div class="header__logo logo">
+      <?php
+        if ( function_exists( 'the_custom_logo' ) ) {
+          the_custom_logo();
+        }
+      ?>
+    </div>
+
+    <?php if ( function_exists( 'pll_the_languages' ) ) : ?>
+      <?php 
+        $languages = pll_the_languages(array('raw'=>1));   
+      ?>
+      <ul class="lang">
+        <?php foreach ($languages as $key => $language) : ?>
+          <li class="lang__item">
+            <a href="<?= $language['url']; ?>" class="lang__link <?= $language['current_lang'] ? 'lang__link--active' : ''; ?>" data-text="<?= mb_strtoupper($language['slug']); ?>">
+              <?= mb_strtoupper($language['slug']); ?>
+            </a>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endif; ?> 
+
+    <div class="header__wrapper">
+      <nav class="header__navigation">
+        <?php 
+          wp_nav_menu(
+            array(
+              'theme_location'  => 'header_menu',
+              'container'       => null,
+              'menu_class'      => 'header__list'
+            )
+          );
+        ?>
+      </nav>
+      
+      <?php if ($phone['text'] && !empty($phone['text'])) : ?>
+        <a href="<?= $phone['link']; ?>" class="header__btn btn"><?= $phone['text']; ?></a>
+      <?php endif; ?>          
+    </div>
+    <button class="burger">
+      <span class="burger__line"></span>
+    </button>
+  </div>
+</header>
 

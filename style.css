@@ -13,3 +13,7 @@ Version: 1.0
 */
 
 @import "assets/css/style.min.css";
+
+.wpcf7-form-control-wrap[data-name="privacy"] {
+  display: none;
+}
