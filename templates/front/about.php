@@ -1,5 +1,7 @@
 <?php 
   $title = get_sub_field( 'title' ) ?? '';
+  $subtitle = get_sub_field( 'subtitle' ) ?? '';
+
   $text = get_sub_field( 'text' ) ?? [];
 
   $image = get_sub_field( 'image' ) ?? [];  
@@ -10,7 +12,7 @@
 
     <div class="about__wrapper">
       <h3 class="about__info">
-        <?= $text['top'] ?? ''; ?>
+        <?= $subtitle; ?>
       </h3>
 
       <div class="about__wrap">

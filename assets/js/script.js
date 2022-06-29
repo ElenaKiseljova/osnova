@@ -235,15 +235,35 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
 
+    const videos = document.querySelectorAll('.video');
 
-    let sliderSlides = document.querySelectorAll(".js-slide");
-    for (let i = 0; i < sliderSlides.length; i++) {
-        let swiperSlide = sliderSlides[i];
-        swiperSlide.classList.add("cursor-slide")
+    if (videos.length > 0) {
+        videos.forEach(video => {
+            const videoPlayButton = video.querySelector('.video__img');
+            const videoIframe = video.querySelector('iframe');
+            const videoTag = video.querySelector('video');
+
+            if (videoPlayButton) {
+                if (videoIframe) {
+                    videoPlayButton.addEventListener('click', () => {
+                        const videoSrc = videoPlayButton.dataset.src;
+
+                        if (videoSrc) {
+                            videoIframe.src = videoSrc;
+
+                            videoPlayButton.classList.add('hide');
+                        }
+                    });
+                } else if (videoTag) {
+                    videoPlayButton.addEventListener('click', () => {
+                        videoTag.play();
+
+                        videoPlayButton.classList.add('hide');
+                    });
+                }
+            }
+        });
     }
-
-
-
 
 })
 document.addEventListener("DOMContentLoaded",(function(){console.log("DOM fully loaded and parsed")}));
