@@ -119,7 +119,7 @@
           'rest_base'           => null, // $post_type. C WP 4.7
           'menu_position'       => 20,
           'menu_icon'           => 'dashicons-cart',
-          //'capability_type'   => 'post',
+          'capability_type'   => 'post',
           //'capabilities'      => 'post', // массив дополнительных прав для этого типа записи
           //'map_meta_cap'      => null, // Ставим true чтобы включить дефолтный обработчик специальных прав
           'hierarchical'        => false,
@@ -254,6 +254,23 @@
 
       return $taxonomies;
   }
+
+  /* ==============================================
+  ********  //Фильтр типов постов для пагинации на стр Таксономий
+  =============================================== */
+  add_action( 'pre_get_posts', 'osnova_taxonomy_filter' );
+
+  function osnova_taxonomy_filter( $query ) 
+  {
+    if( !is_admin() && $query->is_main_query() ) {
+      if( $query->is_tag || $query->is_tax ) {
+        $query->set( 'post_type', [ 'products', 'post', 'page' ] );
+        $query->set( 'posts_per_page', 1 );          
+      }
+    }
+  }
+
+
 
   // Customizer
   // add_action( 'customize_register', 'osnova_customizer' ); 
@@ -416,7 +433,7 @@
       $args['tax_query'][] = [
         'taxonomy' => (string) $taxonomy,
         'field' => 'term_id',
-        'terms' => (int) $term_id,
+        'terms' => [ (int) $term_id ],
       ];
     }
 
