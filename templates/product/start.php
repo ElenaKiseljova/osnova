@@ -1,4 +1,4 @@
-<section class="section product">
+<section class="product">
   <div class="container">
     <div class="product__wrapper">
       <div class="product__img">

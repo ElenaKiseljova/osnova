@@ -8,7 +8,7 @@
   
   // Styles theme
   function osnova_styles () {    
-    wp_enqueue_style('googleapis-fonts-style', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+    wp_enqueue_style('googleapis-fonts-style', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
     
     wp_enqueue_style('osnova-style', get_stylesheet_uri());
   }
@@ -94,20 +94,20 @@
         register_post_type( 'products', [
           'label'  => null,
           'labels' => [
-            'name'               => 'Товары', // основное название для типа записи
-            'singular_name'      => 'Товар', // название для одной записи этого типа
-            'add_new'            => 'Добавить товар', // для добавления новой записи
-            'add_new_item'       => 'Добавление товара', // заголовка у вновь создаваемой записи в админ-панели.
-            'edit_item'          => 'Редактирование товара', // для редактирования типа записи
-            'new_item'           => 'Новый товар', // текст новой записи
-            'view_item'          => 'Смотреть товар', // для просмотра записи этого типа.
-            'search_items'       => 'Искать товар в архиве', // для поиска по этим типам записи
-            'not_found'          => 'Не найден товар', // если в результате поиска ничего не было найдено
-            'not_found_in_trash' => 'Не найден товар в корзине', // если не было найдено в корзине
+            'name'               => __( 'Товары', 'osnova' ), // основное название для типа записи
+            'singular_name'      => __( 'Товар', 'osnova' ), // название для одной записи этого типа
+            'add_new'            => __( 'Добавить товар', 'osnova' ), // для добавления новой записи
+            'add_new_item'       => __( 'Добавление товара', 'osnova' ), // заголовка у вновь создаваемой записи в админ-панели.
+            'edit_item'          => __( 'Редактирование товара', 'osnova' ), // для редактирования типа записи
+            'new_item'           => __( 'Новый товар', 'osnova' ), // текст новой записи
+            'view_item'          => __( 'Смотреть товар', 'osnova' ), // для просмотра записи этого типа.
+            'search_items'       => __( 'Искать товар в архиве', 'osnova' ), // для поиска по этим типам записи
+            'not_found'          => __( 'Не найден товар', 'osnova' ), // если в результате поиска ничего не было найдено
+            'not_found_in_trash' => __( 'Не найден товар в корзине', 'osnova' ), // если не было найдено в корзине
             'parent_item_colon'  => '', // для родителей (у древовидных типов)
-            'menu_name'          => 'Товары', // название меню
+            'menu_name'          => __( 'Товары', 'osnova' ), // название меню
           ],
-          'description'         => 'Это наши товары',
+          'description'         => __( 'Это наши товары', 'osnova' ),
           'public'              => true,
           'publicly_queryable'  => true, // зависит от public
           'exclude_from_search' => true, // зависит от public
@@ -141,20 +141,20 @@
         register_taxonomy( 'products-category', [ 'products' ], [ 
           'label'                 => '', // определяется параметром $labels->name
           'labels'                => [
-            'name'              => 'Категории товаров',
-            'singular_name'     => 'Категория товаров',
-            'search_items'      => 'Найти категорию',
-            'all_items'         => 'Все категории',
-            'view_item '        => 'Посмотреть категорию',
-            'parent_item'       => 'Родительская категория',
-            'parent_item_colon' => 'Родительская категория:',
-            'edit_item'         => 'Редактировать категорию',
-            'update_item'       => 'Обновить категорию',
-            'add_new_item'      => 'Добавить новую категорию',
-            'new_item_name'     => 'Имя новой категории',
-            'menu_name'         => 'Категории товаров',
+            'name'              => __( 'Категории товаров', 'osnova' ),
+            'singular_name'     => __( 'Категория товаров', 'osnova' ),
+            'search_items'      => __( 'Найти категорию', 'osnova' ),
+            'all_items'         => __( 'Все категории', 'osnova' ),
+            'view_item '        => __( 'Посмотреть категорию', 'osnova' ),
+            'parent_item'       => __( 'Родительская категория', 'osnova' ),
+            'parent_item_colon' => __( 'Родительская категория:', 'osnova' ),
+            'edit_item'         => __( 'Редактировать категорию', 'osnova' ),
+            'update_item'       => __( 'Обновить категорию', 'osnova' ),
+            'add_new_item'      => __( 'Добавить новую категорию', 'osnova' ),
+            'new_item_name'     => __( 'Имя новой категории', 'osnova' ),
+            'menu_name'         => __( 'Категории товаров', 'osnova' ),
           ],
-          'description'           => 'Категории товаров фабрики "Основа"', // описание таксономии
+          'description'           => __( 'Категории товаров фабрики "Основа"', 'osnova' ), // описание таксономии
           'public'                => true,
           'publicly_queryable'    => true, // равен аргументу public
           // 'show_in_nav_menus'     => true, // равен аргументу public
@@ -179,20 +179,20 @@
         register_taxonomy( 'products-tag', [ 'products' ], [ 
           'label'                 => '', // определяется параметром $labels->name
           'labels'                => [
-            'name'              => 'Теги товаров',
-            'singular_name'     => 'Тег товаров',
-            'search_items'      => 'Найти тег',
-            'all_items'         => 'Все теги',
-            'view_item '        => 'Посмотреть тег',
-            'parent_item'       => 'Родительский тег',
-            'parent_item_colon' => 'Родительский тег:',
-            'edit_item'         => 'Редактировать тег',
-            'update_item'       => 'Обновить тег',
-            'add_new_item'      => 'Добавить новый тег',
-            'new_item_name'     => 'Имя нового тега',
-            'menu_name'         => 'Теги товаров',
+            'name'              => __( 'Теги товаров', 'osnova' ),
+            'singular_name'     => __( 'Тег товаров', 'osnova' ),
+            'search_items'      => __( 'Найти тег', 'osnova' ),
+            'all_items'         => __( 'Все теги', 'osnova' ),
+            'view_item '        => __( 'Посмотреть тег', 'osnova' ),
+            'parent_item'       => __( 'Родительский тег', 'osnova' ),
+            'parent_item_colon' => __( 'Родительский тег:', 'osnova' ),
+            'edit_item'         => __( 'Редактировать тег', 'osnova' ),
+            'update_item'       => __( 'Обновить тег', 'osnova' ),
+            'add_new_item'      => __( 'Добавить новый тег', 'osnova' ),
+            'new_item_name'     => __( 'Имя нового тега', 'osnova' ),
+            'menu_name'         => __( 'Теги товаров', 'osnova' ),
           ],
-          'description'           => 'Теги товаров фабрики "Основа"', // описание таксономии
+          'description'           => __( 'Теги товаров фабрики "Основа"', 'osnova' ), // описание таксономии
           'public'                => true,
           'publicly_queryable'    => true, // равен аргументу public
           // 'show_in_nav_menus'     => true, // равен аргументу public

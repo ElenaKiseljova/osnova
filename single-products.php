@@ -10,10 +10,6 @@
 ?>
 
 <?php 
-  $frontpage_id = get_option( 'page_on_front' );
-?>
-
-<?php 
   get_template_part( 'templates/product/start' );
 
   //Контент Товара
@@ -61,6 +57,7 @@
 
 <?php 
   //Повторяющиеся поля с Главной
+  $frontpage_id = get_option( 'page_on_front' );
   
   // Check value exists.
   if( have_rows('content', $frontpage_id) ):

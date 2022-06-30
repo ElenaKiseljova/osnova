@@ -71,27 +71,27 @@ document.addEventListener("DOMContentLoaded", function () {
         })
     })
 
-    let filterlist = document.querySelectorAll(".filter__item");
-    let categoryItems = document.querySelectorAll(".category__item");
+    // let filterlist = document.querySelectorAll(".filter__item");
+    // let categoryItems = document.querySelectorAll(".category__item");
 
-    function filter(categoty, items){
-        items.forEach((item)=>{
-            const isItemFiltered = !item.classList.contains(categoty);
-            const isShowAll = categoty.toLowerCase() === "button0";
-            if(isItemFiltered && !isShowAll){
-                item.classList.add("category__hide");
-            }else{
-                item.classList.remove("category__hide");
-            }
-        })
-    }
-    filterlist.forEach((item)=>{
-        item.addEventListener("click", ()=>{
-            const currentCategory = item.dataset.filter
-            filter(currentCategory, categoryItems)
-
-        })
-    })
+    // function filter(categoty, items){
+    //     items.forEach((item)=>{
+    //         const isItemFiltered = !item.classList.contains(categoty);
+    //         const isShowAll = categoty.toLowerCase() === "button0";
+    //         if(isItemFiltered && !isShowAll){
+    //             item.classList.add("category__hide");
+    //         }else{
+    //             item.classList.remove("category__hide");
+    //         }
+    //     })
+    // }
+    // filterlist.forEach((item)=>{
+    //     item.addEventListener("click", ()=>{
+    //         const currentCategory = item.dataset.filter
+    //         filter(currentCategory, categoryItems)
+    //
+    //     })
+    // })
     document.body.addEventListener('keyup', function (e) {
         var key = e.keyCode;
 

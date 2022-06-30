@@ -23,7 +23,7 @@
   <?php if (!empty($banner) && is_array($banner) && !is_wp_error( $banner )) : ?>
     <picture class="picture">
       <source media="(min-width:768px)" srcset="<?= $banner['url'] ?? ''; ?>">
-      <img class="about__img" src="<?= $banner['sizes']['medium'] ?? ''; ?>" alt="<?= strip_tags( $title ); ?>">
+      <img class="properties__img" src="<?= $banner['sizes']['medium'] ?? ''; ?>" alt="<?= strip_tags( $title ); ?>">
     </picture>
   <?php endif; ?>  
 </section>

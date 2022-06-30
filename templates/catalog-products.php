@@ -24,10 +24,10 @@
   window.term_id = '<?= $term_id; ?>';
 </script>
 
-<div>
+<div>  
   <div id="catalog-ajax">
     <?php 
       osnova_get_products_list_html($posts_per_page, $paged, $taxonomy, $term_id);          
     ?>
-  </div>  
+  </div> 
 </div> 

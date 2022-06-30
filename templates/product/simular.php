@@ -14,64 +14,60 @@
         <a class="simular__btn simular__btn--desck" href="<?= $button['link']; ?>"><?= $button['text']; ?></a>
       <?php endif; ?>      
     </div>
-    <div class="swiper simular__swiper">
-      <!-- Additional required wrapper -->
-      <div class="swiper-wrapper">
-        <!-- Slides -->
-        <div class="swiper-slide simular__slide">
-          <picture class="picture simular__picture">
-            <source media="(min-width:768px)" srcset="img/simular-tablet-1.png">
-            <img src="img/simular-1.png" alt="simular">
-          </picture>
-          <p class="simular__text">Liquid Chlor L100</p>
-        </div>
-        <div class="swiper-slide simular__slide">
-          <picture class="picture simular__picture">
-            <source media="(min-width:768px)" srcset="img/simular-tablet-1.png">
-            <img src="img/simular-1.png" alt="simular">
-          </picture>
-          <p class="simular__text">Liquid Chlor L100</p>
-        </div>
 
+    <?php if (!empty($list) && is_array($list) && !is_wp_error( $list )) : ?>
+      <div class="swiper simular__swiper">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+          <!-- Slides -->
+          <?php foreach ($list as $key => $item) : ?>
+            <div class="swiper-slide simular__slide">
+              <a href="<?= get_permalink( $item ); ?>" class="simular__link">
+                <?php if ( has_post_thumbnail( $item ) ) : ?>
+                  <?php 
+                    $thumbnail_desk = get_the_post_thumbnail_url( $item, 'large' ) ?? NOT_FOUND;
+                    $thumbnail_mobile = get_the_post_thumbnail_url( $item, 'medium' ) ?? NOT_FOUND;
+                  ?>
+                  <picture class="picture simular__picture">
+                    <source media="(min-width:768px)" srcset="<?= $thumbnail_desk; ?>">
 
-        <div class="swiper-slide simular__slide">
-          <picture class="picture simular__picture">
-            <source media="(min-width:768px)" srcset="img/simular-tablet-1.png">
-            <img src="img/simular-1.png" alt="simular">
-          </picture>
-          <p class="simular__text">Liquid Chlor L100</p>
-        </div>
-        <div class="swiper-slide simular__slide">
-          <picture class="picture simular__picture">
-            <source media="(min-width:768px)" srcset="img/simular-tablet-1.png">
-            <img src="img/simular-1.png" alt="simular">
-          </picture>
-          <p class="simular__text">Liquid Chlor L100</p>
+                    <img src="<?= $thumbnail_mobile; ?>" alt="<?= strip_tags( get_the_title( $item ) ?? '' ); ?>">
+                  </picture>
+                <?php else : ?>
+                  <picture class="picture simular__picture">
+                    <img src="<?= NOT_FOUND; ?>" alt="<?= strip_tags( get_the_title( $item ) ?? '' ); ?>">
+                  </picture>
+                <?php endif; ?>  
+
+                <p class="simular__text"><?= get_the_title( $item ); ?></p>
+              </a>
+            </div>
+          <?php endforeach; ?>          
         </div>
       </div>
-    </div>
 
+      <div class="slider__wrapper slider__wrapper--mod">
+        <button class="slider__prev slider__prev--simular">
+          <svg class="slider__icon">
+            <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#slider-prev"></use>
+          </svg>
 
-    <div class="slider__wrapper slider__wrapper--mod">
-      <button class="slider__prev slider__prev--simular">
-        <svg class="slider__icon">
-          <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#slider-prev"></use>
-        </svg>
+        </button>
+        <button class="slider__next slider__next--simular">
+          <svg class="slider__icon">
+            <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#slider-next"></use>
+          </svg>
+        </button>
 
-      </button>
-      <button class="slider__next slider__next--simular">
-        <svg class="slider__icon">
-          <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#slider-next"></use>
-        </svg>
-      </button>
+        <div class="slider__pagination slider__pagination--simular"></div>
 
-      <div class="slider__pagination slider__pagination--simular"></div>
-
-    </div>
+      </div>
+    <?php endif; ?>
+    
   </div>
 
-  <button class="simular__btn">Смотреть все</button>
-
-  </div>
+  <?php if (!empty($button) && $button['text'] && !empty($button['text'])) : ?>
+    <a class="simular__btn" href="<?= $button['link']; ?>"><?= $button['text']; ?></a>
+  <?php endif; ?>  
 
 </section>

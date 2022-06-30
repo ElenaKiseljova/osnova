@@ -17,3 +17,7 @@ Version: 1.0
 .wpcf7-form-control-wrap[data-name="privacy"] {
   display: none;
 }
+
+.lang__link--active {
+  pointer-events: none;
+}
