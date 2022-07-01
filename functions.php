@@ -224,7 +224,8 @@
   add_filter( 'wpcf7_form_class_attr', 'osnova_filter_cf7_class' );
 
   function osnova_filter_cf7_class( $class ){
-    $class .= ' form';
+    $class .= ' feedback__form form';
+    
 
     return $class;
   }

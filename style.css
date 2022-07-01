@@ -28,6 +28,10 @@ Version: 1.0
 
 .category__text.changed {
   transition: height 0.3s;
-  
+
   overflow: hidden;
+}
+
+.category__empty {
+  display: block!important;
 }
