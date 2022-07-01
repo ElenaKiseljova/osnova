@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let burger = document.querySelector(".burger");
     let header = document.querySelector('.header');
     let startScreen = document.querySelector('.js-main');
-    // let headerFixed = startScreen.offsetHeight;
     let menuFlag = false;
 
 
@@ -47,16 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         })
     })
-    // window.addEventListener("resize", ()=>{
-    //    if (window.screen.width >= 992){
-    //        console.log(window.screen.width)
-    //        filterContent.remove();
-    //    }
-    // })
-    if(document.documentElement.clientWidth >=992){
-        filterContent?.remove();
-
-    }
 
     let filterMobile = document.querySelectorAll(".filter__header");
     filterMobile.forEach((item, i)=>{
@@ -70,6 +59,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         })
     })
+
+
 
     // let filterlist = document.querySelectorAll(".filter__item");
     // let categoryItems = document.querySelectorAll(".category__item");

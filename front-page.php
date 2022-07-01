@@ -25,11 +25,11 @@
 
         // Case: clients layout.
         elseif( get_row_layout() == 'clients' ):
-          get_template_part( 'templates/front/clients' );
+          get_template_part( 'templates/clients' );
 
         // Case: recommendation layout.
         elseif( get_row_layout() == 'recommendation' ):
-          get_template_part( 'templates/front/recommendation' );
+          get_template_part( 'templates/recommendation' );
 
         // Case: news layout.
         elseif( get_row_layout() == 'news' ):

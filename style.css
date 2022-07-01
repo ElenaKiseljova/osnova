@@ -21,3 +21,13 @@ Version: 1.0
 .lang__link--active {
   pointer-events: none;
 }
+
+.category__read-more {
+  margin-top: 20px;
+}
+
+.category__text.changed {
+  transition: height 0.3s;
+  
+  overflow: hidden;
+}

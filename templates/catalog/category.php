@@ -1,4 +1,4 @@
-<aside>
+<ul class="filter__navigation">
   <?php 
     $taxonomy_aside = 'products-category';
 
@@ -63,16 +63,28 @@
 
     if ( $products_terms_children && !empty($products_terms_children) && is_array($products_terms_children) && !is_wp_error($products_terms_children) ) {
       ?>
-        <h3><?= $products_term_name; ?></h3>
-        <ul>
-          <?php
-            foreach ($products_terms_children as $key => $products_terms_child) {            
-              ?>
-                <li><a href="<?= get_term_link( $products_terms_child, $taxonomy_aside ); ?>"><?= $products_terms_child->name ?? ''; ?></a></li>          
-              <?php                  
-            }
-          ?>
-        </ul>            
+        <li class="filter__wrap filter__wrap--open">
+          <div class="filter__header">
+            <h3 class="filter__title"><?= $products_term_name; ?></h3>
+            <svg class="filter__arrow">
+              <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#header-arrow"></use>
+            </svg>
+          </div>
+          <ul class="filter__list">            
+            <?php
+              foreach ($products_terms_children as $key => $products_terms_child) {            
+                ?>
+                  <li class="filter__item">
+                    <!-- filter__link--active -->
+                    <a class="filter__link " href="<?= get_term_link( $products_terms_child, $taxonomy_aside ); ?>">Реагенты
+                      <?= $products_terms_child->name ?? ''; ?>
+                    </a>
+                  </li>        
+                <?php                  
+              }
+            ?>
+          </ul>
+        </li>           
       <?php          
     }
 
@@ -85,17 +97,29 @@
 
     if ( $furniture_terms_children && !empty($furniture_terms_children) && is_array($furniture_terms_children) && !is_wp_error($furniture_terms_children) ) {
       ?>
-        <h3><?= $furniture_term_name; ?></h3>
-        <ul>
-          <?php
-            foreach ($furniture_terms_children as $key => $furniture_terms_child) {            
-              ?>
-                <li><a href="<?= get_term_link( $furniture_terms_child, $taxonomy_aside ); ?>"><?= $furniture_terms_child->name ?? ''; ?></a></li>          
-              <?php                  
-            }
-          ?>
-        </ul>            
+        <li class="filter__wrap filter__wrap--open">
+          <div class="filter__header">
+            <h3 class="filter__title"><?= $furniture_term_name; ?></h3>
+            <svg class="filter__arrow">
+              <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#header-arrow"></use>
+            </svg>
+          </div>
+          <ul class="filter__list">            
+            <?php
+              foreach ($furniture_terms_children as $key => $furniture_terms_child) {            
+                ?>
+                  <li class="filter__item">
+                    <!-- filter__link--active -->
+                    <a class="filter__link " href="<?= get_term_link( $furniture_terms_child, $taxonomy_aside ); ?>">
+                      <?= $furniture_terms_child->name ?? ''; ?>
+                    </a>
+                  </li>          
+                <?php                  
+              }
+            ?>     
+          </ul>
+        </li>           
       <?php          
     }
   ?>
-</aside>
+</ul>

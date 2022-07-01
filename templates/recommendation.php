@@ -3,8 +3,8 @@
   $list = get_sub_field( 'list' ) ?? [];
 ?>
 
-<section class="section recommendation">
-  <div class="container">
+<section class="section recommendation <?= (is_singular( 'products' ) || is_archive(  )) ? 'recommendation--category' : ''; ?>">
+  <div class="container"> 
     <div class="recommendation__wrapper">
       <h2 class="recommendation__title title"><?= $title; ?></h2>
 

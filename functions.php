@@ -1,6 +1,6 @@
 <?php 
   /* osnova */
-
+  define('MY_THEME_DIR', $_SERVER['DOCUMENT_ROOT'] . '/wp-content/themes/osnova');
   define( 'NOT_FOUND', get_template_directory_uri(  ) . '/assets/img/not-found.jpg' );
   
   add_action('wp_enqueue_scripts', 'osnova_styles', 3);
@@ -86,135 +86,9 @@
   
   if (!function_exists('osnova_init_function')) :
     function osnova_init_function () {
-      /* ==============================================
-      ********  //Регистрация кастомных типов постов
-      =============================================== */
-      function register_custom_post_types () {
-        // Товары
-        register_post_type( 'products', [
-          'label'  => null,
-          'labels' => [
-            'name'               => __( 'Товары', 'osnova' ), // основное название для типа записи
-            'singular_name'      => __( 'Товар', 'osnova' ), // название для одной записи этого типа
-            'add_new'            => __( 'Добавить товар', 'osnova' ), // для добавления новой записи
-            'add_new_item'       => __( 'Добавление товара', 'osnova' ), // заголовка у вновь создаваемой записи в админ-панели.
-            'edit_item'          => __( 'Редактирование товара', 'osnova' ), // для редактирования типа записи
-            'new_item'           => __( 'Новый товар', 'osnova' ), // текст новой записи
-            'view_item'          => __( 'Смотреть товар', 'osnova' ), // для просмотра записи этого типа.
-            'search_items'       => __( 'Искать товар в архиве', 'osnova' ), // для поиска по этим типам записи
-            'not_found'          => __( 'Не найден товар', 'osnova' ), // если в результате поиска ничего не было найдено
-            'not_found_in_trash' => __( 'Не найден товар в корзине', 'osnova' ), // если не было найдено в корзине
-            'parent_item_colon'  => '', // для родителей (у древовидных типов)
-            'menu_name'          => __( 'Товары', 'osnova' ), // название меню
-          ],
-          'description'         => __( 'Это наши товары', 'osnova' ),
-          'public'              => true,
-          'publicly_queryable'  => true, // зависит от public
-          'exclude_from_search' => true, // зависит от public
-          'show_ui'             => true, // зависит от public
-          'show_in_nav_menus'   => true, // зависит от public
-          'show_in_menu'        => true, // показывать ли в меню адмнки
-          'show_in_admin_bar'   => true, // зависит от show_in_menu
-          'show_in_rest'        => true, // добавить в REST API. C WP 4.7
-          'rest_base'           => null, // $post_type. C WP 4.7
-          'menu_position'       => 20,
-          'menu_icon'           => 'dashicons-cart',
-          'capability_type'   => 'post',
-          //'capabilities'      => 'post', // массив дополнительных прав для этого типа записи
-          //'map_meta_cap'      => null, // Ставим true чтобы включить дефолтный обработчик специальных прав
-          'hierarchical'        => false,
-          'supports'            => ['title', 'editor', 'thumbnail', 'page-attributes', 'custom-fields' ], // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
-          'taxonomies'          => ['products-category', 'products-tag'],
-          'has_archive'         => true,
-          'rewrite'             => true,
-          'query_var'           => true,
-        ] );
-      }   
-      
-      register_custom_post_types();
+      require_once MY_THEME_DIR . '/includes/custom-post-types.php';
 
-      /* ==============================================
-      ********  //Регистрация кастомных таксономий 
-      =============================================== */
-      function register_custom_taxonomy () {
-        // Категории товаров
-        register_taxonomy( 'products-category', [ 'products' ], [ 
-          'label'                 => '', // определяется параметром $labels->name
-          'labels'                => [
-            'name'              => __( 'Категории товаров', 'osnova' ),
-            'singular_name'     => __( 'Категория товаров', 'osnova' ),
-            'search_items'      => __( 'Найти категорию', 'osnova' ),
-            'all_items'         => __( 'Все категории', 'osnova' ),
-            'view_item '        => __( 'Посмотреть категорию', 'osnova' ),
-            'parent_item'       => __( 'Родительская категория', 'osnova' ),
-            'parent_item_colon' => __( 'Родительская категория:', 'osnova' ),
-            'edit_item'         => __( 'Редактировать категорию', 'osnova' ),
-            'update_item'       => __( 'Обновить категорию', 'osnova' ),
-            'add_new_item'      => __( 'Добавить новую категорию', 'osnova' ),
-            'new_item_name'     => __( 'Имя новой категории', 'osnova' ),
-            'menu_name'         => __( 'Категории товаров', 'osnova' ),
-          ],
-          'description'           => __( 'Категории товаров фабрики "Основа"', 'osnova' ), // описание таксономии
-          'public'                => true,
-          'publicly_queryable'    => true, // равен аргументу public
-          // 'show_in_nav_menus'     => true, // равен аргументу public
-          'show_ui'               => true, // равен аргументу public
-           'show_in_menu'          => true, // равен аргументу show_ui
-          // 'show_tagcloud'         => true, // равен аргументу show_ui
-          // 'show_in_quick_edit'    => null, // равен аргументу show_ui
-          'hierarchical'          => true,
-      
-          'rewrite'               => true,
-          //'query_var'             => $taxonomy, // название параметра запроса
-          // 'capabilities'          => array(),
-          // 'meta_box_cb'           => null, // html метабокса. callback: `post_categories_meta_box` или `post_tags_meta_box`. false — метабокс отключен.
-          // 'show_admin_column'     => false, // авто-создание колонки таксы в таблице ассоциированного типа записи. (с версии 3.5)
-          'show_in_rest'          => true, // добавить в REST API
-          // 'rest_base'             => null, // $taxonomy
-          // '_builtin'              => false,
-          //'update_count_callback' => '_update_post_term_count',
-        ] );
-
-        // Теги товаров
-        register_taxonomy( 'products-tag', [ 'products' ], [ 
-          'label'                 => '', // определяется параметром $labels->name
-          'labels'                => [
-            'name'              => __( 'Теги товаров', 'osnova' ),
-            'singular_name'     => __( 'Тег товаров', 'osnova' ),
-            'search_items'      => __( 'Найти тег', 'osnova' ),
-            'all_items'         => __( 'Все теги', 'osnova' ),
-            'view_item '        => __( 'Посмотреть тег', 'osnova' ),
-            'parent_item'       => __( 'Родительский тег', 'osnova' ),
-            'parent_item_colon' => __( 'Родительский тег:', 'osnova' ),
-            'edit_item'         => __( 'Редактировать тег', 'osnova' ),
-            'update_item'       => __( 'Обновить тег', 'osnova' ),
-            'add_new_item'      => __( 'Добавить новый тег', 'osnova' ),
-            'new_item_name'     => __( 'Имя нового тега', 'osnova' ),
-            'menu_name'         => __( 'Теги товаров', 'osnova' ),
-          ],
-          'description'           => __( 'Теги товаров фабрики "Основа"', 'osnova' ), // описание таксономии
-          'public'                => true,
-          'publicly_queryable'    => true, // равен аргументу public
-          // 'show_in_nav_menus'     => true, // равен аргументу public
-          'show_ui'               => true, // равен аргументу public
-           'show_in_menu'          => true, // равен аргументу show_ui
-          // 'show_tagcloud'         => true, // равен аргументу show_ui
-          // 'show_in_quick_edit'    => null, // равен аргументу show_ui
-          'hierarchical'          => false,
-      
-          'rewrite'               => true,
-          //'query_var'             => $taxonomy, // название параметра запроса
-          // 'capabilities'          => array(),
-          // 'meta_box_cb'           => null, // html метабокса. callback: `post_categories_meta_box` или `post_tags_meta_box`. false — метабокс отключен.
-          // 'show_admin_column'     => false, // авто-создание колонки таксы в таблице ассоциированного типа записи. (с версии 3.5)
-          'show_in_rest'          => true, // добавить в REST API
-          // 'rest_base'             => null, // $taxonomy
-          // '_builtin'              => false,
-          //'update_count_callback' => '_update_post_term_count',
-        ] );
-      }   
-    
-      register_custom_taxonomy();
+      require_once MY_THEME_DIR . '/includes/custom-taxonomy.php';
 
       /* ==============================================
       ********  //ACF опциональные страницы
@@ -442,51 +316,46 @@
     if ( $query->have_posts() ) {
       if ( $replace ) {
         ?>
-          <ul class="latest__cards" id="more-list">                
+          <ul class="category__list" id="more-list">                
             <?php 
               while ( $query->have_posts() ) {
                 $query->the_post();
                 
-                // get_template_part( 'templates/post', 'card' );
-                
-                echo '<a href="' . get_permalink( get_the_ID(  ) ). '">' . get_the_title(  ) . '</a><br />';
+                get_template_part( 'templates/catalog/product' );
               }
             ?>
           </ul>
           
           <?php if ($query->max_num_pages > 1) : ?>
             <?php if ($query->max_num_pages > $paged) : ?>
-              <button id="more-button" data-max-num-pages="<?= $query->max_num_pages; ?>" data-post-type="products"><?= __( 'Больше', 'osnova' ); ?></button>
+              <button class="category__more" id="more-button" data-max-num-pages="<?= $query->max_num_pages; ?>" data-post-type="products"><?= __( 'Больше', 'osnova' ); ?></button>
             <?php endif; ?>          
 
-            <div class="latest__pagination">
-              <?php 
-                $max_num_pages = $query->max_num_pages;
+            <?php 
+              $max_num_pages = $query->max_num_pages;
 
-                $attr = [
-                  'prev' => false,
-                  'next' => false
-                ];
+              $attr = [
+                'prev' => false,
+                'next' => false,
+                'class' => 'category__pages',
+              ];
 
-                osnova_get_pagination_html($max_num_pages, $paged, $attr);
-              ?>
-            </div>
+              osnova_get_pagination_html($max_num_pages, $paged, $attr);
+            ?>
           <?php endif; ?>       
         <?php 
       } else {
         while ( $query->have_posts() ) {
           $query->the_post();
           
-          // get_template_part( 'templates/post', 'card' );
-          
-          echo '<a href="' . get_permalink( get_the_ID(  ) ). '">' . get_the_title(  ) . '</a><br />';
+          get_template_part( 'templates/catalog/product' );
         }
       } 
 
       wp_reset_postdata();
     } else {
       ?>
-        <p class="latest__empty">
+        <p class="category__empty">
           <?= __( 'По вашему запросу результатов не найдено', 'osnova' ); ?>
         </p>
       <?php
@@ -505,86 +374,55 @@
 
     $prev_text = isset($attr['prev_text']) ? $attr['prev_text'] : __( 'Назад', 'osnova' );
     $next_text = isset($attr['next_text']) ? $attr['next_text'] : __( 'Вперёд', 'osnova' );
+    $class = isset($attr['class']) ? $attr['class'] : '';
     ?>          
-      <div class="pagination">
-        <ul class="pagination__list">
-          <?php if ($prev) : ?>
-            <li class="pagination__item pagination__item--prev">
-              <a href="#catalog-ajax" class="pagination__button pagination__button--prev <?= ($paged === 1) ? 'disabled' : ''; ?>"  data-paged="<?= $paged - 1; ?>">
-                <svg width="9" height="14">
-                  <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#pagination-prev"></use>
-                </svg>
+      <ul class="pagination <?= $class; ?>">
+        <?php if ($prev) : ?>
+          <li class="pagination__item pagination__item--prev">
+            <a href="#catalog-ajax" class="pagination__button pagination__button--prev <?= ($paged === 1) ? 'disabled' : ''; ?>"  data-paged="<?= $paged - 1; ?>">
+              <svg width="9" height="14">
+                <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#pagination-prev"></use>
+              </svg>
 
-                <?= $prev_text; ?>
-              </a>
-            </li>
-          <?php endif; ?>          
+              <?= $prev_text; ?>
+            </a>
+          </li>
+        <?php endif; ?>          
 
-          <?php 
-            if ($max_num_pages <= $show) {
-              for ($i=1; $i <= $max_num_pages; $i++) { 
+        <?php 
+          if ($max_num_pages <= $show) {
+            for ($i=1; $i <= $max_num_pages; $i++) { 
+              ?>
+                <li class="pagination__item">
+                  <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ($i === 1) ? 'first' : ($i === $max_num_pages ? 'last' : ''); ?> <?= ($i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
+                    <?= $i; ?>
+                  </a>
+                </li>
+              <?php
+            }
+          } else if ($max_num_pages > $show) {
+            if ($paged <= $left) {
+              for ($i=1; $i <= $left; $i++) {                  
                 ?>
                   <li class="pagination__item">
-                    <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ($i === 1) ? 'first' : ($i === $max_num_pages ? 'last' : ''); ?> <?= ($i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
+                    <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ($i === 1) ? 'first' : ''; ?> <?= ($i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
                       <?= $i; ?>
                     </a>
                   </li>
                 <?php
               }
-            } else if ($max_num_pages > $show) {
-              if ($paged <= $left) {
-                for ($i=1; $i <= $left; $i++) {                  
-                  ?>
-                    <li class="pagination__item">
-                      <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ($i === 1) ? 'first' : ''; ?> <?= ($i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
-                        <?= $i; ?>
-                      </a>
-                    </li>
-                  <?php
-                }
-                ?>
-                  <li class="pagination__item pagination__item--separate">
-                    ...
-                  </li>
-                  <li class="pagination__item">
-                    <a href="#catalog-ajax" class="pagination__button pagination__button--page last" data-paged="<?= $max_num_pages; ?>">
-                      <?= $max_num_pages; ?>
-                    </a>
-                  </li>
-                <?php
-              } else if ($paged > $left && $paged <= ($max_num_pages - $right)) {
-                ?>
-                  <li class="pagination__item">
-                    <a href="#catalog-ajax" class="pagination__button pagination__button--page" data-paged="1">
-                      1
-                    </a>
-                  </li>
-                  <li class="pagination__item pagination__item--separate">
-                    ...
-                  </li>
-                <?php
-                $center_half = floor($center/2);
-                for ($i= ($paged - $center_half); $i <= ($paged + $center_half); $i++) {                  
-                  ?>
-                    <li class="pagination__item">
-                      <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ((int)$i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
-                        <?= $i; ?>
-                      </a>
-                    </li>
-                  <?php
-                }
-                ?>
-                  <li class="pagination__item pagination__item--separate">
-                    ...
-                  </li>
-                  <li class="pagination__item">
-                    <a href="#catalog-ajax" class="pagination__button pagination__button--page" data-paged="<?= $max_num_pages; ?>1">
-                      <?= $max_num_pages; ?>
-                    </a>
-                  </li>                    
-                <?php
-              } else if ($paged > $left && $paged > ($max_num_pages - $right)) {
-                ?>
+              ?>
+                <li class="pagination__item pagination__item--separate">
+                  ...
+                </li>
+                <li class="pagination__item">
+                  <a href="#catalog-ajax" class="pagination__button pagination__button--page last" data-paged="<?= $max_num_pages; ?>">
+                    <?= $max_num_pages; ?>
+                  </a>
+                </li>
+              <?php
+            } else if ($paged > $left && $paged <= ($max_num_pages - $right)) {
+              ?>
                 <li class="pagination__item">
                   <a href="#catalog-ajax" class="pagination__button pagination__button--page" data-paged="1">
                     1
@@ -593,32 +431,62 @@
                 <li class="pagination__item pagination__item--separate">
                   ...
                 </li>
+              <?php
+              $center_half = floor($center/2);
+              for ($i= ($paged - $center_half); $i <= ($paged + $center_half); $i++) {                  
+                ?>
+                  <li class="pagination__item">
+                    <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ((int)$i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
+                      <?= $i; ?>
+                    </a>
+                  </li>
                 <?php
-                for ($i= ($max_num_pages - $right + 1); $i <= $max_num_pages; $i++) {                  
-                  ?>
-                    <li class="pagination__item">
-                      <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ($i === $max_num_pages) ? 'last' : ''; ?> <?= ($i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
-                        <?= $i; ?>
-                      </a>
-                    </li>
-                  <?php
-                }
-              }                
-            }              
-          ?>
-          
-          <?php if ($next) : ?>
-            <li class="pagination__item pagination__item--next">
-              <a href="#catalog-ajax" class="pagination__button pagination__button--next <?= ($paged === $max_num_pages) ? 'disabled' : ''; ?>" data-paged="<?= $paged + 1; ?>">
-                <?= $next_text; ?>  
-                <svg width="9" height="14">
-                  <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#pagination-next"></use>
-                </svg>
-              </a>
-            </li>
-          <?php endif; ?>          
-        </ul>
-      </div>          
+              }
+              ?>
+                <li class="pagination__item pagination__item--separate">
+                  ...
+                </li>
+                <li class="pagination__item">
+                  <a href="#catalog-ajax" class="pagination__button pagination__button--page" data-paged="<?= $max_num_pages; ?>1">
+                    <?= $max_num_pages; ?>
+                  </a>
+                </li>                    
+              <?php
+            } else if ($paged > $left && $paged > ($max_num_pages - $right)) {
+              ?>
+              <li class="pagination__item">
+                <a href="#catalog-ajax" class="pagination__button pagination__button--page" data-paged="1">
+                  1
+                </a>
+              </li>
+              <li class="pagination__item pagination__item--separate">
+                ...
+              </li>
+              <?php
+              for ($i= ($max_num_pages - $right + 1); $i <= $max_num_pages; $i++) {                  
+                ?>
+                  <li class="pagination__item">
+                    <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ($i === $max_num_pages) ? 'last' : ''; ?> <?= ($i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
+                      <?= $i; ?>
+                    </a>
+                  </li>
+                <?php
+              }
+            }                
+          }              
+        ?>
+        
+        <?php if ($next) : ?>
+          <li class="pagination__item pagination__item--next">
+            <a href="#catalog-ajax" class="pagination__button pagination__button--next <?= ($paged === $max_num_pages) ? 'disabled' : ''; ?>" data-paged="<?= $paged + 1; ?>">
+              <?= $next_text; ?>  
+              <svg width="9" height="14">
+                <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#pagination-next"></use>
+              </svg>
+            </a>
+          </li>
+        <?php endif; ?>          
+      </ul>         
     <?php
   }
 

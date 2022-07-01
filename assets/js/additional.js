@@ -18,7 +18,55 @@
     });
   }
 
-  /* Плавный скролл к элементам */
+  // Кнопка "Подробнее" в Каталоге
+  const deviceWidth = window.innerWidth && document.documentElement.clientWidth ?
+    Math.min(window.innerWidth, document.documentElement.clientWidth) :
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.getElementsByTagName('body')[0].clientWidth;
+
+  let HEIGHT_TEXT_DEFAULT = 140;
+
+  if (deviceWidth > 499 && deviceWidth < 1025) {
+    HEIGHT_TEXT_DEFAULT = 84;
+  } else if (deviceWidth > 1024) {
+    HEIGHT_TEXT_DEFAULT = 63;
+  }
+
+  const readMoreButton = document.querySelector('.category__read-more');
+  const readMoreText = document.querySelector('.category__text');
+
+  if (readMoreButton && readMoreText) {
+    const readMoreTextHeight = readMoreText.offsetHeight;
+
+    if (readMoreTextHeight > HEIGHT_TEXT_DEFAULT) {
+      readMoreText.style.height = HEIGHT_TEXT_DEFAULT + 'px';
+
+      readMoreText.classList.add('changed');
+
+      readMoreButton.addEventListener('click', () => {
+        if (readMoreButton.classList.contains('open')) {
+          readMoreText.style.height = HEIGHT_TEXT_DEFAULT + 'px';
+
+          readMoreButton.classList.remove('open');
+          readMoreButton.classList.add('close');
+
+          readMoreButton.textContent = readMoreButton.dataset.stateClose || 'Read more';
+        } else {
+          readMoreText.style.height = readMoreTextHeight + 'px';
+
+          readMoreButton.classList.remove('close');
+          readMoreButton.classList.add('open');
+
+          readMoreButton.textContent = readMoreButton.dataset.stateOpen || 'Read less';
+        }
+      });
+    } else {
+      readMoreButton.remove();
+    }
+  }
+
+  // Плавный скролл к элементам
   const scrollSmooth = (container = document) => {
     try {
       const hrefAttributes = container.querySelectorAll("a[href*='#']");
@@ -247,7 +295,7 @@
   };
 
   document.addEventListener('DOMContentLoaded', () => {
-    scrollSmooth();
+    // scrollSmooth();
 
     additional.paginationActivate();
 
