@@ -72,12 +72,6 @@
       add_image_size( 'osnova_article_tablet', 960, 616, false);
 
       add_image_size( 'osnova_article_gallery_tablet', 472, 311, false);
-
-      // add_image_size( 'osnova_technics_category_banner', 1600, 890, false);
-      // add_image_size( 'osnova_technics_category_banner_mobile', 375, 650, false);
-      // add_image_size( 'osnova_technics_category_offer', 570, 327, false);
-      
-      // add_image_size( 'osnova_technics_gallery', 540, 364, false);
     }
   endif;
 
@@ -143,64 +137,6 @@
       }
     }
   }
-
-
-
-  // Customizer
-  // add_action( 'customize_register', 'osnova_customizer' ); 
-  // function osnova_customizer ( $wp_customize ) 
-  // {
-  //   /* Create Panel Logo */  
-  //   $wp_customize->add_panel('logo', array(
-  //     'priority' => 50,
-  //     'theme_supports' => '',
-  //     'title' => __('Логотип', 'osnova'),
-  //     'description' => __('Изображения для Логотипа (хедер/футер)', 'osnova'),
-  //   ));
-
-  //   /* Create Sections for Panel Logo */  
-  //   $wp_customize->add_section('logo_header', array(
-  //     'panel' => 'logo',
-  //     'type' => 'theme_mod', 
-  //     'priority' => 5,
-  //     'theme_supports' => '',
-  //     'title' => __('Логотип (хедер)', 'osnova'),
-  //     'description' => '',
-  //   ));
-
-  //   $wp_customize->add_section('logo_footer', array(
-  //     'panel' => 'logo',
-  //     'type' => 'theme_mod', 
-  //     'priority' => 10,
-  //     'theme_supports' => '',
-  //     'title' => __('Логотип (футер)', 'osnova'),
-  //     'description' => '',
-  //   ));
-
-  //   /* Create Settings for Panel Logo */  
-  //   $wp_customize->add_setting('logo_header', array(
-  //     'default'    =>  '',
-  //     'transport'  =>  'refresh',
-  //   ));
-
-  //   $wp_customize->add_setting('logo_footer', array(
-  //     'default'    =>  '',
-  //     'transport'  =>  'refresh',
-  //   ));
-
-  //   /* Create Controls for Panel Logo */  
-  //   $wp_customize->add_control( new WP_Customize_Image_Control($wp_customize, 'logo_image_header', array(
-  //       'label'    => __('Изображение логотипа', 'osnova'),
-  //       'section'  => 'logo_header',
-  //       'settings' => 'logo_header',
-  //   )));
-
-  //   $wp_customize->add_control( new WP_Customize_Image_Control($wp_customize, 'logo_image_footer', array(
-  //       'label'    => __('Изображение логотипа', 'osnova'),
-  //       'section'  => 'logo_footer',
-  //       'settings' => 'logo_footer',
-  //   )));  
-  // }
 
    /* ==============================================
   ********  //Класс для пунктов меню
@@ -393,14 +329,6 @@
         'paged' => $paged,
         'post__not_in' => $sticky,
       ];
-
-      if ( !is_null($taxonomy) && !is_null($term_id) ) {
-        $args['tax_query'][] = [
-          'taxonomy' => (string) $taxonomy,
-          'field' => 'term_id',
-          'terms' => [ (int) $term_id ],
-        ];
-      }
     } else if ( $type === 'news' ) {
       $args = [
         'post_type' => 'post',
@@ -410,6 +338,14 @@
         'posts_per_page' => $posts_per_page,
         'post__in' => $sticky_slice,
         'ignore_sticky_posts' => 1
+      ];
+    }
+
+    if ( !is_null($taxonomy) && !is_null($term_id) ) {
+      $args['tax_query'][] = [
+        'taxonomy' => (string) $taxonomy,
+        'field' => 'term_id',
+        'terms' => [ (int) $term_id ],
       ];
     }
 
@@ -588,5 +524,61 @@
     <?php
   }
 
-  
+  /* ==============================================
+  ********  //Хлебные крошки
+  =============================================== */
+  function osnova_yoast_breadcrumbs () 
+  {
+    $WPSEO_Breadcrumbs = new WPSEO_Breadcrumbs();
+    $yoast_breadcrumbs_links = $WPSEO_Breadcrumbs->get_links();  
+    
+    if ($yoast_breadcrumbs_links) {
+      ?>
+        <ul class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
+          <?php
+            $i = 0;
+            foreach ($yoast_breadcrumbs_links as $yoast_breadcrumbs_link) {
+              $home_page_url = home_url(  ) ? (home_url(  ) . '/') : '';
+              $products_archive_url = get_post_type_archive_link( 'products' ) ?? '';
+              
+              $url = $yoast_breadcrumbs_link['url'];
+              $text = $yoast_breadcrumbs_link['text'];
+
+              if( $url === $home_page_url ) {
+                $id = $yoast_breadcrumbs_link['id'];
+                $text = get_the_title( $id );
+              }
+
+              if( $url === $products_archive_url ) {
+                // ИД Каталога
+                $catalog_page_id = get_field( 'catalog_page_id', 'options' ) ?? null;
+
+                $text = get_the_title( $catalog_page_id );
+              } 
+              
+              if ($i < (count($yoast_breadcrumbs_links) - 1)) {                               
+                ?>
+                  <li class="breadcrumbs__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a href="<?= $url; ?>" itemprop="item">
+                      <span itemprop="name"><?= $text; ?></span>
+                      <meta itemprop="position" content="<?= $i; ?>">
+                    </a>
+                  </li>
+                <?php
+              } else {
+                ?>
+                  <li class="breadcrumbs__item breadcrumbs__item--current">
+                    <span>
+                      <?= $text; ?>
+                    </span>
+                  </li>
+                <?php
+              }     
+              $i++; 
+            }
+          ?>
+        </ul>
+      <?php
+    }
+  }
 ?>

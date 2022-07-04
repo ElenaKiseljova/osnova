@@ -11,7 +11,7 @@
   }
 
   // Получаем номер текущей стр для пагинации
-  $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;;
+  $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
   // ИД Каталога
   $catalog_page_id = get_field( 'catalog_page_id', 'options' ) ?? null;
