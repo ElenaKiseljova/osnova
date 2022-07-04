@@ -207,7 +207,7 @@
       if (dataAjaxContainer) {
         let dataForm = new FormData();
 
-        dataForm.append('action', 'osnova_ajax_get_products_list_html');
+        dataForm.append('action', 'osnova_ajax_get_posts_list_html');
         dataForm.append('security', osnova_ajax.nonce);
 
         dataForm.append('posts_per_page', window.postPerpage);
@@ -222,9 +222,9 @@
     getAjaxMore(paged, dataAjaxContainer, postType, callback) {
       let dataForm = new FormData();
 
-      if (postType === 'products') {
-        dataForm.append('action', 'osnova_ajax_get_products_list_html');
-      }
+      dataForm.append('action', 'osnova_ajax_get_posts_list_html');
+
+      dataForm.append('post_type', postType);
 
       dataForm.append('security', osnova_ajax.nonce);
 

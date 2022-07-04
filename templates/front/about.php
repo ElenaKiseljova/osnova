@@ -23,10 +23,15 @@
   </div>
 
   <?php if (!empty($image) && is_array($image) && !is_wp_error( $image )) : ?>
+    <?php 
+      $image_desktop = $image['url'] ?? '';  
+      $image_tablet =$image['sizes']['osnova_front_about_tablet'] ?? '';  
+      $image_mobile = $image['sizes']['osnova_front_about_mobile'] ?? '';  
+    ?>
     <picture class="picture">
-      <source media="(min-width:1200px)" srcset="<?= $image['url'] ?? ''; ?>">
-      <source media="(min-width:768px)" srcset="<?= $image['sizes']['osnova_front_about_tablet'] ?? ''; ?>">
-      <img class="about__img" src="<?= $image['sizes']['osnova_front_about_mobile'] ?? ''; ?>" alt="<?= get_bloginfo( 'name' ); ?>">
+      <source media="(min-width:1200px)" srcset="<?= $image_desktop; ?>">
+      <source media="(min-width:768px)" srcset="<?= $image_tablet; ?>">
+      <img class="about__img" src="<?= $image_mobile; ?>" alt="<?= get_bloginfo( 'name' ); ?>">
     </picture>
   <?php endif; ?>  
 </section>

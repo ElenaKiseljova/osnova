@@ -1035,7 +1035,7 @@ img {
           transition-duration: 0.3s;
 }
 .burger.clicked {
-  width: 20px;
+  width: 40px;
   height: 20px;
 }
 .burger.clicked .burger__line {
@@ -2416,6 +2416,9 @@ img {
   }
 }
 
+.clients--goods {
+  padding-bottom: 0;
+}
 @media (min-width: 992px) {
   .clients__wrapper {
     display: -webkit-box;
@@ -4104,7 +4107,6 @@ img {
   }
 }
 .category__empty {
-  display: none;
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -4158,6 +4160,9 @@ img {
 }
 .category__item {
   padding: 24px;
+  -webkit-transition: max-height 0.5s, opacity 0.2s ease-in-out;
+  -o-transition: max-height 0.5s, opacity 0.2s ease-in-out;
+  transition: max-height 0.5s, opacity 0.2s ease-in-out;
 }
 .category__item:nth-child(-n+2):before {
   content: "";
@@ -4199,16 +4204,16 @@ img {
 }
 @media (any-hover: hover) {
   .category__item:hover {
-    -webkit-transition: visibility 0.5s, max-height 0.5s, opacity 0.2s ease-in-out;
-    -o-transition: visibility 0.5s, max-height 0.5s, opacity 0.2s ease-in-out;
-    transition: visibility 0.5s, max-height 0.5s, opacity 0.2s ease-in-out;
+    -webkit-transition: max-height 0.5s, opacity 0.2s ease-in-out;
+    -o-transition: max-height 0.5s, opacity 0.2s ease-in-out;
+    transition: max-height 0.5s, opacity 0.2s ease-in-out;
     border-radius: 5px;
     background: #ebf0f3;
   }
   .category__item:hover .category-info__list {
-    -webkit-transition: visibility 0.5s, max-height 0.5s, opacity 0.2s ease-in-out;
-    -o-transition: visibility 0.5s, max-height 0.5s, opacity 0.2s ease-in-out;
-    transition: visibility 0.5s, max-height 0.5s, opacity 0.2s ease-in-out;
+    -webkit-transition: max-height 0.5s, opacity 0.2s ease-in-out;
+    -o-transition: max-height 0.5s, opacity 0.2s ease-in-out;
+    transition: max-height 0.5s, opacity 0.2s ease-in-out;
     opacity: 1;
     visibility: visible;
     max-height: -webkit-max-content;
@@ -4219,8 +4224,14 @@ img {
 .category__link {
   text-decoration: none;
   position: relative;
+  -webkit-transition: visibility 0.5s, max-height 0.5s, opacity 0.2s ease-in-out;
+  -o-transition: visibility 0.5s, max-height 0.5s, opacity 0.2s ease-in-out;
+  transition: visibility 0.5s, max-height 0.5s, opacity 0.2s ease-in-out;
 }
 .category__wrap {
+  -webkit-transition: max-height 0.5s, opacity 0.2s ease-in-out;
+  -o-transition: max-height 0.5s, opacity 0.2s ease-in-out;
+  transition: max-height 0.5s, opacity 0.2s ease-in-out;
   background: rgba(235, 240, 243, 0.5);
   border-radius: 5px;
   height: 370px;
@@ -4260,9 +4271,9 @@ img {
   width: 100%;
   margin-top: 20px;
   list-style: none;
-  -webkit-transition: visibility 0.5s, opacity 0.5s ease-in-out;
-  -o-transition: visibility 0.5s, opacity 0.5s ease-in-out;
-  transition: visibility 0.5s, opacity 0.5s ease-in-out;
+  -webkit-transition: opacity 0.5s ease-in-out;
+  -o-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
   overflow: hidden;
   max-height: 0;
   position: absolute;
@@ -4312,18 +4323,6 @@ img {
   width: 100%;
   max-width: 139px;
 }
-.category__content--error .category__empty {
-  display: block;
-}
-.category__content--error .category__list {
-  display: none;
-}
-.category__content--error .category__more {
-  display: none;
-}
-.category__content--error .pagination {
-  display: none;
-}
 .category__more {
   outline: none;
   border: none;
@@ -4348,7 +4347,7 @@ img {
           align-items: center;
   width: 100%;
   max-width: 300px;
-  margin: 50px auto;
+  margin: 50px auto 30px;
   border-radius: 25px;
   cursor: pointer;
   -webkit-transition: all 0.5s ease-in-out;
@@ -4459,7 +4458,7 @@ img {
 }
 
 .pagination {
-  margin: 0 auto;
+  margin: 20px auto 0;
   list-style: none;
 }
 
@@ -5155,17 +5154,29 @@ img {
   max-width: -moz-max-content;
   max-width: max-content;
   cursor: pointer;
+  position: relative;
 }
 .contact__text:not(:last-child) {
   margin-bottom: 10px;
 }
 @media (any-hover: hover) {
   .contact__text:hover {
+    color: #0B8215;
     -webkit-transition: all 0.5s ease-in-out;
     -o-transition: all 0.5s ease-in-out;
     transition: all 0.5s ease-in-out;
-    color: #0B8215;
-    border-bottom: 1px solid rgba(11, 130, 21, 0.2);
+  }
+  .contact__text:hover:before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: rgba(11, 130, 21, 0.2);
+    -webkit-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
   }
 }
 .contact__wrap {

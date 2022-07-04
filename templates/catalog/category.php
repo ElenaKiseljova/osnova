@@ -76,7 +76,7 @@
                 ?>
                   <li class="filter__item">
                     <!-- filter__link--active -->
-                    <a class="filter__link " href="<?= get_term_link( $products_terms_child, $taxonomy_aside ); ?>">Реагенты
+                    <a class="filter__link " href="<?= get_term_link( $products_terms_child, $taxonomy_aside ); ?>">
                       <?= $products_terms_child->name ?? ''; ?>
                     </a>
                   </li>        

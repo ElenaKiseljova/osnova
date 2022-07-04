@@ -13,8 +13,11 @@
   // Получаем номер текущей стр для пагинации
   $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;;
 
+  // ИД Каталога
+  $catalog_page_id = get_field( 'catalog_page_id', 'options' ) ?? null;
+
   //Получение кол-ва Товаров на 1 стр
-  $posts_per_page = get_field( 'posts_per_page', 'options' ) ?? 9;
+  $posts_per_page = get_field( 'posts_per_page', $catalog_page_id  ) ? get_field( 'posts_per_page', $catalog_page_id  ) : (get_option( 'posts_per_page' ) ?? 9);
 ?>
 
 <script>

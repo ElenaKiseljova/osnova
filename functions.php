@@ -67,11 +67,11 @@
       add_image_size( 'osnova_front_about_tablet', 1000, 560, false);
       add_image_size( 'osnova_front_about_mobile', 320, 179, false);
 
+      add_image_size( 'osnova_blog', 360, 260, false);
+
       add_image_size( 'osnova_article_tablet', 960, 616, false);
-      add_image_size( 'osnova_article_mobile', 300, 250, false);
 
       add_image_size( 'osnova_article_gallery_tablet', 472, 311, false);
-      add_image_size( 'osnova_article_gallery_mobile', 300, 200, false);
 
       // add_image_size( 'osnova_technics_category_banner', 1600, 890, false);
       // add_image_size( 'osnova_technics_category_banner_mobile', 375, 650, false);
@@ -252,11 +252,11 @@
   ********  //Ajax
   =============================================== */
   if( wp_doing_ajax() ) {
-    add_action('wp_ajax_osnova_ajax_get_products_list_html', 'osnova_ajax_get_products_list_html');
-    add_action('wp_ajax_nopriv_osnova_ajax_get_products_list_html', 'osnova_ajax_get_products_list_html'); 
+    add_action('wp_ajax_osnova_ajax_get_posts_list_html', 'osnova_ajax_get_posts_list_html');
+    add_action('wp_ajax_nopriv_osnova_ajax_get_posts_list_html', 'osnova_ajax_get_posts_list_html'); 
   }
 
-  function osnova_ajax_get_products_list_html()
+  function osnova_ajax_get_posts_list_html()
   {
     try {
       // Первым делом проверяем параметр безопасности
@@ -270,13 +270,19 @@
 
       $replace = (isset($_POST['replace']) && $_POST['replace'] === '0') ? false : true;
 
+      $post_type = isset($_POST['post_type']) ? $_POST['post_type'] : 'products';
+
       $response = [
         'post' => $_POST,
       ];
 
       ob_start();
 
-      osnova_get_products_list_html( $posts_per_page, $paged, $taxonomy, $term_id, $replace );
+      if ( $post_type === 'products' ) {
+        osnova_get_products_list_html( $posts_per_page, $paged, $taxonomy, $term_id, $replace );
+      } else if ( $post_type === 'post' ) {
+        osnova_get_posts_list_html( $posts_per_page, $paged, $taxonomy, $term_id, $replace );
+      }      
   
       $response['content'] = ob_get_contents();
   
@@ -362,7 +368,98 @@
       <?php
     } 
   }
+  
+  /* ==============================================
+  ********  //Получение списка Постов
+  =============================================== */
+  function osnova_get_posts_list_html($posts_per_page = 6, $paged = 1, $taxonomy = null, $term_id = null, $replace = true, $type = 'last' ) 
+  {
+    $sticky = get_option( 'sticky_posts' );
+    
+    $args = [
+      'post_type' => 'post',
+      'post_status' => 'publish',
+      'order' => 'ASC',
+      'orderby' => 'menu_order',
+    ];
 
+    if ( $type === 'last' ) {
+      $args = [
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        'order' => 'ASC',
+        'orderby' => 'menu_order',
+        'posts_per_page' => $posts_per_page,
+        'paged' => $paged,
+        'post__not_in' => $sticky,
+      ];
+
+      if ( !is_null($taxonomy) && !is_null($term_id) ) {
+        $args['tax_query'][] = [
+          'taxonomy' => (string) $taxonomy,
+          'field' => 'term_id',
+          'terms' => [ (int) $term_id ],
+        ];
+      }
+    } else if ( $type === 'news' ) {
+      $args = [
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        'order' => 'ASC',
+        'orderby' => 'menu_order',
+        'posts_per_page' => $posts_per_page,
+        'post__in' => $sticky_slice,
+        'ignore_sticky_posts' => 1
+      ];
+    }
+
+    $query = new WP_Query( $args ); 
+
+    if ( $query->have_posts() ) {
+      if ( $replace ) {
+        ?>
+          <ul class="last__list" id="more-list">                
+            <?php 
+              while ( $query->have_posts() ) {
+                $query->the_post();
+                
+                get_template_part( 'templates/post', 'card' );
+              }
+            ?>
+          </ul>
+          
+          <?php if ($query->max_num_pages > 1 && $type === 'last') : ?>
+            <?php if ($query->max_num_pages > $paged) : ?>
+              <button class="last__btn" id="more-button" data-max-num-pages="<?= $query->max_num_pages; ?>" data-post-type="post"><?= __( 'Больше', 'osnova' ); ?></button>
+            <?php endif; ?> 
+          <?php endif; ?>       
+        <?php 
+      } else {
+        while ( $query->have_posts() ) {
+          $query->the_post();
+          
+
+          if ( $type === 'last' ) {
+            get_template_part( 'templates/post', 'card' );
+          } else if ( $type === 'news' ) {
+            get_template_part( 'templates/post', 'news' );
+          }          
+        }
+      }       
+
+      wp_reset_postdata();
+    } else {
+      ?>
+        <p class="category__empty">
+          <?= __( 'По вашему запросу результатов не найдено', 'osnova' ); ?>
+        </p>
+      <?php
+    } 
+  }
+
+  /* ==============================================
+  ********  //Пагинация
+  =============================================== */
   function osnova_get_pagination_html( $max_num_pages, $paged, $attr = [] ) 
   {
     $show = isset($attr['show']) ? (int) $attr['show'] : 5;
