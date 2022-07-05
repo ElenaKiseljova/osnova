@@ -1,5 +1,11 @@
 <section class="product">
   <div class="container">
+    <?php 
+      if ( function_exists( 'osnova_yoast_breadcrumbs' ) ) {
+        osnova_yoast_breadcrumbs(  );
+      }
+    ?>
+    
     <div class="product__wrapper">
       <div class="product__img">
         <?php if ( has_post_thumbnail(  ) ) : ?>

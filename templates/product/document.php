@@ -17,7 +17,7 @@
               $image = $item['image'] ? $item['image']['sizes']['large'] : '';  
               $alt = $item['image'] ? ($item['image']['alt'] ?? 'document') : 'document';
             ?>
-            <div class="swiper-slide document__slide">
+            <div class="swiper-slide swiper-zoom-container document__slide">
               <picture class="picture">
                 <img class="document__img" src="<?= $image; ?>" alt="<?= $alt; ?>">
               </picture>

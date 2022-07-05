@@ -214,6 +214,7 @@
         dataForm.append('paged', paged);
         dataForm.append('taxonomy', window.taxonomy);
         dataForm.append('term_id', window.term_id);
+        dataForm.append('order', window.order);
 
         additional.onAjax(dataForm, dataAjaxContainer);
       }
@@ -232,6 +233,7 @@
       dataForm.append('paged', paged);
       dataForm.append('taxonomy', window.taxonomy);
       dataForm.append('term_id', window.term_id);
+      dataForm.append('order', window.order);
 
       dataForm.append('replace', 0);
 
@@ -300,5 +302,37 @@
     additional.paginationActivate();
 
     additional.moreButton();
+
+    const tel = document.querySelector('#tel');
+    const itiSelectedDialCode = document.querySelector('.iti__selected-dial-code');
+    const fullTel = document.querySelector('#full-tel');
+
+    if (tel && itiSelectedDialCode && fullTel) {
+      tel.addEventListener('input', (evt) => {
+        fullTel.value = itiSelectedDialCode.textContent + ' ' + tel.value;
+      });
+    }
+
+    // Обработчик успешной отправки формы
+    const wpcf7Elms = document.querySelectorAll('.wpcf7');
+
+    if (wpcf7Elms.length > 0) {
+      wpcf7Elms.forEach(wpcf7Elm => {
+        //wpcf7submit
+        wpcf7Elm.addEventListener('wpcf7mailsent', (evt) => {
+          if (termsInput) {
+            const termsInputLabel = termsInput.closest('label');
+
+            if (termsInputLabel) {
+              termsInputLabel.classList.remove('checked');
+            }
+          }
+
+          if (fullTel && fullTel.value) {
+            fullTel.value = '';
+          }
+        });
+      });
+    }
   });
 })();

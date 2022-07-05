@@ -23,12 +23,17 @@
 
   //Последние новости
   $last_news_title = get_field( 'last_news_title', $page_for_posts  ) ?? '';
+
+  $order = get_field( 'order', $page_for_posts  ) ? get_field( 'order', $page_for_posts  ) : 'DESC';
+
+  $replace = true;
 ?>
 <script>
   window.paged = '<?= $paged; ?>';
   window.postPerpage = '<?= $posts_per_page; ?>';
   window.taxonomy = '<?= $taxonomy; ?>';
   window.term_id = '<?= $term_id; ?>';
+  window.order = '<?= $order; ?>';
 </script>
 
 <section class="section heading">
@@ -43,7 +48,7 @@
   <div class="container">
     <ul class="news__list">
       <?php 
-        osnova_get_posts_list_html( 3, 1, $taxonomy, $term_id, false, 'news' );
+        osnova_get_posts_list_html( 3, 1, $taxonomy, $term_id, false, 'news', $order );
       ?>
     </ul>
   </div>
@@ -55,7 +60,7 @@
 
     <div class="last__wrapper" id="catalog-ajax">
       <?php 
-        osnova_get_posts_list_html( $posts_per_page, 1, $taxonomy, $term_id, true, 'last' );
+        osnova_get_posts_list_html( $posts_per_page, 1, $taxonomy, $term_id, $replace, 'last', $order );
       ?>
     </div>
   </div>

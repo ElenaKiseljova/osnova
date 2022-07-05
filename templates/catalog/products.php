@@ -18,6 +18,10 @@
 
   //Получение кол-ва Товаров на 1 стр
   $posts_per_page = get_field( 'posts_per_page', $catalog_page_id  ) ? get_field( 'posts_per_page', $catalog_page_id  ) : (get_option( 'posts_per_page' ) ?? 9);
+
+  $order = get_field( 'order', $catalog_page_id  ) ? get_field( 'order', $catalog_page_id  ) : 'DESC';
+
+  $replace = true;
 ?>
 
 <script>
@@ -25,10 +29,11 @@
   window.postPerpage = '<?= $posts_per_page; ?>';
   window.taxonomy = '<?= $taxonomy; ?>';
   window.term_id = '<?= $term_id; ?>';
+  window.order = '<?= $order; ?>';
 </script>
 
 <div id="catalog-ajax">
   <?php 
-    osnova_get_products_list_html($posts_per_page, $paged, $taxonomy, $term_id);          
+    osnova_get_products_list_html($posts_per_page, $paged, $taxonomy, $term_id, $replace, $order);          
   ?>
 </div>  

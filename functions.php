@@ -15,9 +15,8 @@
 
   // Scripts theme
   function osnova_scripts () {    
-    if (!is_404(  )) {
-      // wp_enqueue_script('swiper-script', get_template_directory_uri() . '/assets/swiper-bundle.min.js', $deps = array(), $ver = null, $in_footer = true );
-      wp_enqueue_script('main-script', get_template_directory_uri() . '/assets/js/script.min.js', $deps = array(), $ver = null, $in_footer = true );
+    if (!is_404(  )) {      
+      wp_enqueue_script('main-script', get_template_directory_uri() . '/assets/js/script.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
       wp_enqueue_script('additional-script', get_template_directory_uri() . '/assets/js/additional.js', $deps = array(), $ver = null, $in_footer = true );
     }
     
@@ -208,6 +207,8 @@
 
       $post_type = isset($_POST['post_type']) ? $_POST['post_type'] : 'products';
 
+      $order = isset($_POST['order']) ? $_POST['order'] : 'DESC';
+
       $response = [
         'post' => $_POST,
       ];
@@ -215,9 +216,9 @@
       ob_start();
 
       if ( $post_type === 'products' ) {
-        osnova_get_products_list_html( $posts_per_page, $paged, $taxonomy, $term_id, $replace );
+        osnova_get_products_list_html( $posts_per_page, $paged, $taxonomy, $term_id, $replace, $order );
       } else if ( $post_type === 'post' ) {
-        osnova_get_posts_list_html( $posts_per_page, $paged, $taxonomy, $term_id, $replace );
+        osnova_get_posts_list_html( $posts_per_page, $paged, $taxonomy, $term_id, $replace, 'last', $order );
       }      
   
       $response['content'] = ob_get_contents();
@@ -235,12 +236,12 @@
   /* ==============================================
   ********  //Получение списка Товаров
   =============================================== */
-  function osnova_get_products_list_html($posts_per_page = 9, $paged = 1, $taxonomy = null, $term_id = null, $replace = true) 
+  function osnova_get_products_list_html($posts_per_page = 9, $paged = 1, $taxonomy = null, $term_id = null, $replace = true, $order = 'DESC') 
   {
     $args = [
       'post_type' => 'products',
       'post_status' => 'publish',
-      'order' => 'ASC',
+      'order' => $order,
       'orderby' => 'menu_order',
       'posts_per_page' => $posts_per_page,
       'paged' => $paged,
@@ -308,14 +309,14 @@
   /* ==============================================
   ********  //Получение списка Постов
   =============================================== */
-  function osnova_get_posts_list_html($posts_per_page = 6, $paged = 1, $taxonomy = null, $term_id = null, $replace = true, $type = 'last' ) 
+  function osnova_get_posts_list_html($posts_per_page = 6, $paged = 1, $taxonomy = null, $term_id = null, $replace = true, $type = 'last', $order = 'DESC' ) 
   {
     $sticky = get_option( 'sticky_posts' );
     
     $args = [
       'post_type' => 'post',
       'post_status' => 'publish',
-      'order' => 'ASC',
+      'order' => $order,
       'orderby' => 'menu_order',
     ];
 
@@ -323,7 +324,7 @@
       $args = [
         'post_type' => 'post',
         'post_status' => 'publish',
-        'order' => 'ASC',
+        'order' => $order,
         'orderby' => 'menu_order',
         'posts_per_page' => $posts_per_page,
         'paged' => $paged,
@@ -333,7 +334,7 @@
       $args = [
         'post_type' => 'post',
         'post_status' => 'publish',
-        'order' => 'ASC',
+        'order' => $order,
         'orderby' => 'menu_order',
         'posts_per_page' => $posts_per_page,
         'post__in' => $sticky_slice,
