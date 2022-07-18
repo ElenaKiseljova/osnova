@@ -15,13 +15,14 @@
           <?php foreach ($list as $key => $item) : ?>
             <?php 
               $image = $item['image'] ? $item['image']['sizes']['large'] : '';  
+              $file = $item['file'] ?? '';  
               $alt = $item['image'] ? ($item['image']['alt'] ?? 'document') : 'document';
             ?>
-            <div class="swiper-slide swiper-zoom-container document__slide">
+            <a class="swiper-slide swiper-zoom-container document__slide" href="<?= $file; ?>" target="_blank">
               <picture class="picture">
                 <img class="document__img" src="<?= $image; ?>" alt="<?= $alt; ?>">
               </picture>
-            </div>
+            </a>
           <?php endforeach; ?>          
         </div>
         <div class="slider__wrapper slider__wrapper--mod slider__wrapper--document">
