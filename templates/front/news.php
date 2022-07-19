@@ -5,7 +5,7 @@
   $list = get_sub_field( 'list' ) ?? [];
 ?>
 
-<section class="section news">
+<section class="section news" id="news">
   <div class="container">
     <div class="news__wrapper">
       <h2 class="news__title title"><?= $title; ?></h2>

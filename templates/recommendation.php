@@ -18,7 +18,9 @@
                   $alt = $item['image'] ? $item['image']['alt'] : 'recommendation';
                 ?>
                 <div class="swiper-slide swiper-zoom-container recommendation__slide js-slide cursor-slide">
-                  <img class="recommendation__img" src="<?= $image; ?>" alt="<?= $alt; ?>">
+                  <a href="<?= $image; ?>" data-fancybox="gallery">
+                    <img class="recommendation__img" src="<?= $image; ?>" alt="<?= $alt; ?>">
+                  </a>                  
                 </div>
               <?php endforeach; ?>          
             </div>

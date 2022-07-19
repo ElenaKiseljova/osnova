@@ -33,6 +33,12 @@
 <section class="section heading">
   <div class="container">
     <div class="heading__top">
+      <?php 
+        if ( function_exists( 'osnova_yoast_breadcrumbs' ) ) {
+          osnova_yoast_breadcrumbs(  );
+        }
+      ?>
+      
       <h1 class="heading__title"><?= get_the_title(  ); ?></h1>
       <p class="heading__date"><?= get_the_time( 'd F Y' ); ?></p>
     </div>

@@ -297,7 +297,7 @@
   };
 
   document.addEventListener('DOMContentLoaded', () => {
-    // scrollSmooth();
+    scrollSmooth();
 
     additional.paginationActivate();
 

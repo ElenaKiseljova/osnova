@@ -39,6 +39,12 @@
 <section class="section heading">
   <div class="container">
     <div class="heading__top">
+      <?php 
+        if ( function_exists( 'osnova_yoast_breadcrumbs' ) ) {
+          osnova_yoast_breadcrumbs(  );
+        }
+      ?>
+
       <h1 class="heading__title"><?= $term_name ?? get_the_title( $page_for_posts ); ?></h1>
     </div>
   </div>

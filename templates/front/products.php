@@ -3,7 +3,7 @@
   $list = get_sub_field( 'list' ) ?? [];
 ?>
 
-<section class="products section">
+<section class="products section" id="products">
   <div class="container">
     <h2 class="products__title title"><?= $title; ?></h2>
   </div>

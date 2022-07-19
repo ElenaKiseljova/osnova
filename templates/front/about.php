@@ -6,7 +6,7 @@
 
   $image = get_sub_field( 'image' ) ?? [];  
 ?>
-<section class="about section">
+<section class="about section" id="about">
   <div class="container about__container">
     <h2 class="about__title title"><?= $title; ?></h2>
 

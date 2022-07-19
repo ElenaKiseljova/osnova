@@ -32,6 +32,12 @@
   <section class="section heading">
     <div class="container">
       <div class="heading__top">
+        <?php 
+          if ( function_exists( 'osnova_yoast_breadcrumbs' ) ) {
+            osnova_yoast_breadcrumbs(  );
+          }
+        ?>
+        
         <h1 class="heading__title"><?php the_title(  ); ?></h1>
       </div>
     </div>

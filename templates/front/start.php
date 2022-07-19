@@ -8,7 +8,7 @@
   $image = get_field( 'image' ) ?? [];
 ?>
 
-<section class="start">
+<section class="start" id="start">
   <div class="container">
     <?php if (!empty($image) && is_array($image) && !is_wp_error( $image )) : ?>
       <div class="start__bg">

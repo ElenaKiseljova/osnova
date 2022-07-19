@@ -9,16 +9,16 @@
   // Styles theme
   function osnova_styles () {    
     wp_enqueue_style('googleapis-fonts-style', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
-    
+    wp_enqueue_style('fancybox-style', 'https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css');
+
     wp_enqueue_style('osnova-style', get_stylesheet_uri());
   }
 
   // Scripts theme
   function osnova_scripts () {    
-    if (!is_404(  )) {      
-      wp_enqueue_script('main-script', get_template_directory_uri() . '/assets/js/script.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
-      wp_enqueue_script('additional-script', get_template_directory_uri() . '/assets/js/additional.js', $deps = array(), $ver = null, $in_footer = true );
-    }
+    wp_enqueue_script('fancybox-script', 'https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js', $deps = array(), $ver = null, $in_footer = true );
+    wp_enqueue_script('main-script', get_template_directory_uri() . '/assets/js/script.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
+    wp_enqueue_script('additional-script', get_template_directory_uri() . '/assets/js/additional.js', $deps = array(), $ver = null, $in_footer = true );
     
     // AJAX
     $args = array(
@@ -144,7 +144,7 @@
   function osnova_change_menu_item_css_classes( $classes, $item, $args, $depth ) {
   	if( $args->theme_location === 'header_menu' ){
       if ($depth === 0) {
-        $classes[] = 'header__item';
+        $classes[] = 'navigation__item';
       } else if ($depth === 1) {
         $classes[] = 'sub-menu__item';
       }      
@@ -279,8 +279,8 @@
               $max_num_pages = $query->max_num_pages;
 
               $attr = [
-                'prev' => false,
-                'next' => false,
+                'prev' => true,
+                'next' => true,
                 'class' => 'category__pages',
               ];
 
@@ -414,7 +414,7 @@
       <ul class="pagination <?= $class; ?>">
         <?php if ($prev) : ?>
           <li class="pagination__item pagination__item--prev">
-            <a href="#catalog-ajax" class="pagination__button pagination__button--prev <?= ($paged === 1) ? 'disabled' : ''; ?>"  data-paged="<?= $paged - 1; ?>">
+            <a href="#catalog-ajax" class="pagination__button pagination__button--prev <?= ((int) $paged === 1) ? 'disabled' : ''; ?>"  data-paged="<?= $paged - 1; ?>">
               <svg width="9" height="14">
                 <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#pagination-prev"></use>
               </svg>
@@ -429,7 +429,7 @@
             for ($i=1; $i <= $max_num_pages; $i++) { 
               ?>
                 <li class="pagination__item">
-                  <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ($i === 1) ? 'first' : ($i === $max_num_pages ? 'last' : ''); ?> <?= ($i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
+                  <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ((int) $i === 1) ? 'first' : ((int) $i === $max_num_pages ? 'last' : ''); ?> <?= ((int) $i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
                     <?= $i; ?>
                   </a>
                 </li>
@@ -440,7 +440,7 @@
               for ($i=1; $i <= $left; $i++) {                  
                 ?>
                   <li class="pagination__item">
-                    <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ($i === 1) ? 'first' : ''; ?> <?= ($i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
+                    <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ((int) $i === 1) ? 'first' : ''; ?> <?= ((int) $i === (int) $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
                       <?= $i; ?>
                     </a>
                   </li>
@@ -471,7 +471,7 @@
               for ($i= ($paged - $center_half); $i <= ($paged + $center_half); $i++) {                  
                 ?>
                   <li class="pagination__item">
-                    <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ((int)$i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
+                    <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ((int)$i === (int) $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
                       <?= $i; ?>
                     </a>
                   </li>
@@ -501,7 +501,7 @@
               for ($i= ($max_num_pages - $right + 1); $i <= $max_num_pages; $i++) {                  
                 ?>
                   <li class="pagination__item">
-                    <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ($i === $max_num_pages) ? 'last' : ''; ?> <?= ($i === $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
+                    <a href="#catalog-ajax" class="pagination__button pagination__button--page <?= ((int) $i === (int) $max_num_pages) ? 'last' : ''; ?> <?= ((int) $i === (int) $paged) ? 'current' : ''; ?>" data-paged="<?= $i; ?>">
                       <?= $i; ?>
                     </a>
                   </li>
@@ -513,7 +513,7 @@
         
         <?php if ($next) : ?>
           <li class="pagination__item pagination__item--next">
-            <a href="#catalog-ajax" class="pagination__button pagination__button--next <?= ($paged === $max_num_pages) ? 'disabled' : ''; ?>" data-paged="<?= $paged + 1; ?>">
+            <a href="#catalog-ajax" class="pagination__button pagination__button--next <?= ((int) $paged === (int) $max_num_pages) ? 'disabled' : ''; ?>" data-paged="<?= $paged + 1; ?>">
               <?= $next_text; ?>  
               <svg width="9" height="14">
                 <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#pagination-next"></use>
@@ -534,8 +534,9 @@
     $yoast_breadcrumbs_links = $WPSEO_Breadcrumbs->get_links();  
     
     if ($yoast_breadcrumbs_links) {
+      $class_list = is_singular( 'products' ) ? 'product__breadcrumbs' : 'heading__breadcrumbs';
       ?>
-        <ul class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <ul class="breadcrumbs <?= $class_list; ?>" itemscope itemtype="https://schema.org/BreadcrumbList">
           <?php
             $i = 0;
             foreach ($yoast_breadcrumbs_links as $yoast_breadcrumbs_link) {

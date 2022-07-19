@@ -11,7 +11,7 @@
     $title = $term->name ?? '';
     $description = term_description() ?? '';
   } else if ( $catalog_page_id ) {
-    $catalog_page_id_translate = pll_get_post( $catalog_page_id ) ?? null;
+    $catalog_page_id_translate = function_exists( 'pll_get_post' ) ? (pll_get_post( $catalog_page_id ) ?? null) : null;
     $catalog_page_id = $catalog_page_id_translate ? (int) $catalog_page_id_translate : $catalog_page_id;
 
     $title = get_the_title( $catalog_page_id ) ?? '';
@@ -21,14 +21,14 @@
 <section class="section heading">
   <div class="container">
     <div class="heading__top">
+      <?php 
+        if ( function_exists( 'osnova_yoast_breadcrumbs' ) ) {
+          osnova_yoast_breadcrumbs(  );
+        }
+      ?>
+      
       <h1 class="heading__title"><?= $title; ?></h1>
     </div>
-
-    <?php 
-      if ( function_exists( 'osnova_yoast_breadcrumbs' ) ) {
-        osnova_yoast_breadcrumbs(  );
-      }
-    ?>
 
     <button class="heading__btn">
       <svg class="heading__icon" width="14" height="9">

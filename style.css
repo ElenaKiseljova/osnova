@@ -51,3 +51,15 @@ input[type=radio].visually-hidden {
 
   overflow: hidden;
 }
+
+.pagination__item {
+  cursor: default;
+}
+
+.pagination__button.disabled {
+  pointer-events: none;
+}
+
+.filter__title--current {
+  color: #0b3d98;
+}

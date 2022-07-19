@@ -32,9 +32,9 @@
         ] );
       ?>
       <?php if ( $sub_term_children && !empty($sub_term_children) && is_array($sub_term_children) && !is_wp_error($sub_term_children) ) : ?>
-        <li class="filter__wrap filter__wrap--open">
+         <li class="filter__wrap filter__wrap--open">
           <div class="filter__header">
-            <h3 class="filter__title"><?= $term_child_mame; ?></h3>
+            <a class="filter__title" href="<?= $term_child_link; ?>"><?= $term_child_mame; ?></a>
             <svg class="filter__arrow">
               <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#header-arrow"></use>
             </svg>
@@ -57,10 +57,9 @@
         </li>  
       <?php else : ?>
         <li class="filter__wrap">
-          <!-- filter__link--active -->
-          <a class="filter__link " href="<?= $term_child_link; ?>">
-            <?= $term_child_mame; ?>
-          </a>       
+          <div class="filter__header">
+            <a class="filter__title <?= $term_child_id === $term_id ? 'filter__title--current' : ''; ?>" href="<?= $term_child_link; ?>"><?= $term_child_mame; ?></a>
+          </div>      
         </li>     
       <?php endif; ?>         
     <?php endforeach; ?>  
@@ -92,7 +91,7 @@
         <?php if ( $sub_term_parent_children && !empty($sub_term_parent_children) && is_array($sub_term_parent_children) && !is_wp_error($sub_term_parent_children) ) : ?>
           <li class="filter__wrap filter__wrap--open">
             <div class="filter__header">
-              <h3 class="filter__title"><?= $term_parent_child_mame; ?></h3>
+              <a class="filter__title" href="<?= $term_parent_child_link; ?>"><?= $term_parent_child_mame; ?></a>
               <svg class="filter__arrow">
                 <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#header-arrow"></use>
               </svg>
@@ -114,9 +113,9 @@
           </li>  
         <?php else : ?>
           <li class="filter__wrap">
-            <a class="filter__link <?= ($term_parent_child_id === $term_id) ? 'filter__link--active' : ''; ?>" href="<?= $term_parent_child_link; ?>">
-              <?= $term_parent_child_mame; ?>
-            </a>       
+            <div class="filter__header">
+              <a class="filter__title <?= $term_parent_child_id === $term_id ? 'filter__title--current' : ''; ?>" href="<?= $term_parent_child_link; ?>"><?= $term_parent_child_mame; ?></a>
+            </div>    
           </li>     
         <?php endif; ?>         
       <?php endforeach; ?>  

@@ -35,13 +35,13 @@
     <?php endif; ?> 
 
     <div class="header__wrapper">
-      <nav class="header__navigation">
+      <nav class="header__navigation navigation">
         <?php 
           wp_nav_menu(
             array(
               'theme_location'  => 'header_menu',
               'container'       => null,
-              'menu_class'      => 'header__list'
+              'menu_class'      => 'navigation__list'
             )
           );
         ?>
