@@ -47,7 +47,7 @@
         ?>
       </nav>
       
-      <?php if ($phone['text'] && !empty($phone['text'])) : ?>
+      <?php if (!empty($phone) && $phone['text'] && !empty($phone['text'])) : ?>
         <a href="<?= $phone['link']; ?>" class="header__btn btn"><?= $phone['text']; ?></a>
       <?php endif; ?>          
     </div>

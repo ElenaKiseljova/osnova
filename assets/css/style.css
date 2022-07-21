@@ -3086,26 +3086,14 @@ template {
     margin-bottom: 40px;
   }
 }
-.form__wrap--error .form__input {
-  color: #DB4F4F;
-  border-bottom: 1px solid #DB4F4F;
+.form__wrap .wpcf7-not-valid-tip {
+  display: none;
 }
-.form__wrap--error .form__input::-webkit-input-placeholder {
-  color: #DB4F4F;
-}
-.form__wrap--error .form__input::-moz-placeholder {
+.form__wrap--error .iti .iti__flag-container .iti__selected-flag .iti__selected-dial-code {
   color: #DB4F4F;
 }
-.form__wrap--error .form__input:-ms-input-placeholder {
-  color: #DB4F4F;
-}
-.form__wrap--error .form__input::-ms-input-placeholder {
-  color: #DB4F4F;
-}
-.form__wrap--error .form__input::placeholder {
-  color: #DB4F4F;
-}
-.form__wrap--error .form__input + .wpcf7-not-valid-tip {
+.form__wrap--error .wpcf7-not-valid-tip {
+  display: block;
   font-family: "Montserrat", sans-serif;
   font-size: 16px;
   font-weight: 500;
@@ -3116,9 +3104,6 @@ template {
   position: absolute;
   top: 100%;
   right: 0;
-}
-.form__wrap--error .form__input > .iti__selected-dial-code {
-  color: #DB4F4F !important;
 }
 .form__label {
   position: absolute;
@@ -3215,6 +3200,38 @@ template {
   letter-spacing: 0em;
   text-align: left;
   color: rgba(235, 240, 243, 0.4);
+}
+.form__input.wpcf7-not-valid {
+  color: #DB4F4F;
+  border-bottom: 1px solid #DB4F4F;
+}
+.form__input.wpcf7-not-valid::-webkit-input-placeholder {
+  color: #DB4F4F;
+}
+.form__input.wpcf7-not-valid::-moz-placeholder {
+  color: #DB4F4F;
+}
+.form__input.wpcf7-not-valid:-ms-input-placeholder {
+  color: #DB4F4F;
+}
+.form__input.wpcf7-not-valid::-ms-input-placeholder {
+  color: #DB4F4F;
+}
+.form__input.wpcf7-not-valid::placeholder {
+  color: #DB4F4F;
+}
+.form__input.wpcf7-not-valid ~ .wpcf7-not-valid-tip {
+  display: block;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #DB4F4F;
+  position: absolute;
+  top: 100%;
+  right: 0;
 }
 .form__checkbox {
   cursor: pointer;

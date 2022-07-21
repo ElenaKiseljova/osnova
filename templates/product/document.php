@@ -18,7 +18,7 @@
               $file = $item['file'] ?? '';  
               $alt = $item['image'] ? ($item['image']['alt'] ?? 'document') : 'document';
             ?>
-            <a class="swiper-slide swiper-zoom-container document__slide" href="<?= $file; ?>" target="_blank">
+            <a class="swiper-slide document__slide" href="<?= $file; ?>" target="_blank">
               <picture class="picture">
                 <img class="document__img" src="<?= $image; ?>" alt="<?= $alt; ?>">
               </picture>

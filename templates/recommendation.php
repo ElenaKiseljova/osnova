@@ -17,7 +17,7 @@
                   $image = $item['image'] ? ($item['image']['sizes']['large'] ?? $item['image']['url'] ?? '') : '';
                   $alt = $item['image'] ? $item['image']['alt'] : 'recommendation';
                 ?>
-                <div class="swiper-slide swiper-zoom-container recommendation__slide js-slide cursor-slide">
+                <div class="swiper-slide recommendation__slide js-slide cursor-slide">
                   <a href="<?= $image; ?>" data-fancybox="gallery">
                     <img class="recommendation__img" src="<?= $image; ?>" alt="<?= $alt; ?>">
                   </a>                  
