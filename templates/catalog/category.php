@@ -13,7 +13,7 @@
 
     $term_children = get_terms( [
       'taxonomy' => $taxonomy_aside,
-      'hide_empty' => false,
+      'hide_empty' => true,
       'parent'   => $term_id
     ] );
   ?>
@@ -27,7 +27,7 @@
 
         $sub_term_children = get_terms( [
           'taxonomy' => $taxonomy_aside,
-          'hide_empty' => false,
+          'hide_empty' => true,
           'parent'   => $term_child_id 
         ] );
       ?>
@@ -70,7 +70,7 @@
 
       $term_parent_children = get_terms( [
         'taxonomy' => $taxonomy_aside,
-        'hide_empty' => false,
+        'hide_empty' => true,
         'parent'   => $term_parent_id
       ] );
     ?>
@@ -84,7 +84,7 @@
 
           $sub_term_parent_children = get_terms( [
             'taxonomy' => $taxonomy_aside,
-            'hide_empty' => false,
+            'hide_empty' => true,
             'parent'   => $term_parent_child_id 
           ] );
         ?>
