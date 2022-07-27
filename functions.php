@@ -144,7 +144,7 @@
   function osnova_change_menu_item_css_classes( $classes, $item, $args, $depth ) {
   	if( $args->theme_location === 'header_menu' ){
       if ($depth === 0) {
-        $classes[] = 'navigation__item';
+        $classes[] = 'navigation__item header__item';
       } else if ($depth === 1) {
         $classes[] = 'sub-menu__item';
       }      

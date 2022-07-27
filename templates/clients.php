@@ -3,7 +3,7 @@
   $list = get_sub_field( 'list' ) ?? [];
 ?>
 
-<section class="clients section">
+<section class="clients section <?= (is_post_type_archive( 'products' ) || is_tax( 'products-category' ) || is_tax( 'products-tag' )) ? 'clients--category' : ''; ?>">
   <div class="container">
     <div class="clients__wrapper">
       <h2 class="clients__title title"><?= $title; ?></h2>

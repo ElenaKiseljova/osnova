@@ -55,8 +55,8 @@
           get_template_part( 'templates/catalog/products' );
         ?>  
 
-        <?php if (!empty($description)) : ?>
-          <div class="category__about">
+        <div class="category__about">          
+          <?php if (!empty($description)) : ?>
             <div class="category__text">
               <?= $description; ?>
             </div>            
@@ -64,8 +64,8 @@
             <button class="category__read-more close" data-state-close="<?= __( 'Подробнее', 'osnova' ); ?>" data-state-open="<?= __( 'Меньше подробностей', 'osnova' ); ?>">
               <?= __( 'Подробнее', 'osnova' ); ?>
             </button>
-          </div>
-        <?php endif; ?>         
+          <?php endif; ?> 
+        </div>               
 
         <?php 
           get_template_part( 'templates/catalog/tags' );
