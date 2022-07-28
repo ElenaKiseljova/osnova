@@ -7,7 +7,7 @@
     //Страница архива таксономии 
     $term = get_queried_object();
 
-    if ( $term && is_a($term, 'WP_term') ) {
+    if ( $term && is_a($term, 'WP_term') &&  $term->taxonomy !== 'products-tag') {
       $term_id = $term->term_id;
     }
 
