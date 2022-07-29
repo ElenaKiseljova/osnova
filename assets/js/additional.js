@@ -334,5 +334,21 @@
         });
       });
     }
+
+    // const gtranslate_wrapper = document.querySelector('#gtranslate_wrapper');
+
+    // if (gtranslate_wrapper) {
+    //   const langLinks = gtranslate_wrapper.querySelectorAll('a');
+    //   const href = window.location.href;
+
+    //   langLinks.forEach((langLink) => {
+    //     const langCode = langLink.querySelector('span').textContent.toLowerCase().trim();
+
+    //     if (href.indexOf(`/${langCode}`) > -1) {
+    //       console.log(langCode);
+    //       langLink.click();
+    //     }
+    //   });
+    // }
   });
 })();
