@@ -335,20 +335,24 @@
       });
     }
 
-    // const gtranslate_wrapper = document.querySelector('#gtranslate_wrapper');
+    const gtranslate_wrapper = document.querySelector('#gtranslate_wrapper');
+    const curLang = document.querySelector('.lang__link--active');
 
-    // if (gtranslate_wrapper) {
-    //   const langLinks = gtranslate_wrapper.querySelectorAll('a');
-    //   const href = window.location.href;
+    if (gtranslate_wrapper && curLang && doGTranslate !== undefined) {
+      const langLinks = gtranslate_wrapper.querySelectorAll('a');
+      const curLangCode = curLang.dataset.text.toLowerCase().trim();
 
-    //   langLinks.forEach((langLink) => {
-    //     const langCode = langLink.querySelector('span').textContent.toLowerCase().trim();
+      langLinks.forEach((langLink) => {
+        let langCode = langLink.textContent.toLowerCase().trim();
 
-    //     if (href.indexOf(`/${langCode}`) > -1) {
-    //       console.log(langCode);
-    //       langLink.click();
-    //     }
-    //   });
-    // }
+        if (langCode === curLangCode) {
+          langCode = (langCode === 'ua') ? 'uk' : langCode;
+
+          doGTranslate(`ru|${langCode}`);
+
+          console.log(langCode);
+        }
+      });
+    }
   });
 })();
