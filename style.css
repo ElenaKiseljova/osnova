@@ -63,3 +63,7 @@ input[type=radio].visually-hidden {
 .filter__title--current {
   color: #0b3d98;
 }
+
+#gtranslate_wrapper {
+  display: none;
+}
