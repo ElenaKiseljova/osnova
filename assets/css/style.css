@@ -719,7 +719,7 @@ template {
 }
 .navigation__item.menu-item-has-children .sub-menu li + li,
 .navigation__item .menu-item-has-children .sub-menu li + li {
-  margin-top: 15px;
+  padding-top: 15px;
 }
 .navigation__item.menu-item-has-children .sub-menu li a,
 .navigation__item .menu-item-has-children .sub-menu li a {
@@ -954,9 +954,10 @@ template {
     width: fit-content;
     min-width: 497px;
     max-width: 497px;
-    height: 100%;
-    padding: 20px;
-    overflow: auto;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    pointer-events: none;
     /* For Mozilla scrollbar */
     scrollbar-color: #0b3d98 #eeeeee;
     scrollbar-width: thin;
@@ -979,7 +980,7 @@ template {
     opacity: 1;
   }
   .navigation__item.menu-item-has-children > .sub-menu > .menu-item-has-children > .sub-menu .sub-menu li + li {
-    margin-top: 5px;
+    padding-top: 5px;
   }
   .navigation__item.menu-item-has-children > .sub-menu > .menu-item-has-children:hover, .navigation__item.menu-item-has-children > .sub-menu > .menu-item-has-children:focus-within, .navigation__item.menu-item-has-children > .sub-menu > .menu-item-has-children.active {
     background-color: #EBF0F3;
@@ -988,7 +989,11 @@ template {
     transition: background-color 0.3s;
   }
   .navigation__item.menu-item-has-children > .sub-menu > .menu-item-has-children:hover > .sub-menu, .navigation__item.menu-item-has-children > .sub-menu > .menu-item-has-children:focus-within > .sub-menu, .navigation__item.menu-item-has-children > .sub-menu > .menu-item-has-children.active > .sub-menu {
+    height: 100%;
+    padding: 20px;
     opacity: 1;
+    overflow: auto;
+    pointer-events: all;
   }
   .navigation__item.menu-item-has-children > .sub-menu > .menu-item-has-children + li {
     margin-top: 0;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?= function_exists( 'pll_current_language' ) ? pll_current_language() : 'ru'; ?>">
+<html lang="<?= function_exists( 'pll_current_language' ) ? (pll_current_language() === 'uk' ? 'ua' : pll_current_language() ): 'ru'; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"

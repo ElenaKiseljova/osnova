@@ -1,6 +1,36 @@
 (() => {
   'use strict';
 
+  const cookieEdit = {
+    set(name, value, options = {}) {
+      options = {
+        path: '/',
+      }
+
+      if (options.expires instanceof Date) {
+        options.expires = options.expires.toUTCString();
+      }
+
+      let updatedCookie = encodeURIComponent(name) + '=' + value;
+
+      for (let optionKey in options) {
+        updatedCookie += '; ' + optionKey;
+        let optionValue = options[optionKey];
+        if (optionValue !== true) {
+          updatedCookie += '=' + optionValue;
+        }
+      }
+      document.cookie = updatedCookie;
+    },
+    get(name) {
+      let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      ));
+
+      return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+  };
+
   // Чекбокс в форме
   const termsInput = document.querySelector('#terms');
 
@@ -335,24 +365,33 @@
       });
     }
 
-    const gtranslate_wrapper = document.querySelector('#gtranslate_wrapper');
-    const curLang = document.querySelector('.lang__link--active');
+    const gtranslate_wrapper = document.querySelectorAll('#gtranslate_wrapper a');
+    const linkLangs = document.querySelectorAll('.lang__link');
 
-    if (gtranslate_wrapper && curLang && doGTranslate !== undefined) {
-      const langLinks = gtranslate_wrapper.querySelectorAll('a');
-      const curLangCode = curLang.dataset.text.toLowerCase().trim();
+    if (gtranslate_wrapper.length > 0 && linkLangs.length > 0) {
+      linkLangs.forEach((linkLang) => {
+        linkLang.addEventListener('click', (evt) => {
+          evt.preventDefault();
 
-      langLinks.forEach((langLink) => {
-        let langCode = langLink.textContent.toLowerCase().trim();
+          let curLangCode = linkLang.dataset.text.toLowerCase().trim();
 
-        if (langCode === curLangCode) {
-          langCode = (langCode === 'ua') ? 'uk' : langCode;
+          const curLink = [].find.call(gtranslate_wrapper, (a) => (a.textContent.toLowerCase().trim() === curLangCode));
 
-          doGTranslate(`ru|${langCode}`);
+          curLangCode = (curLang === 'ua') ? 'uk' : curLangCode;
 
-          console.log(langCode);
-        }
+          doGTranslate(`ru|${curLangCode}`);
+
+          window.location.href = linkLang.href;
+        });
       });
+
+      let curLang = document.querySelector('.lang__link--active').dataset.text.toLowerCase().trim();
+
+      curLang = (curLang === 'ua') ? 'uk' : curLang;
+
+      doGTranslate(`ru|${curLang}`);
+
+      // console.log(GTranslateGetCurrentLang(), curLang);
     }
   });
 })();

@@ -67,3 +67,18 @@ input[type=radio].visually-hidden {
 #gtranslate_wrapper {
   display: none;
 }
+
+.plug {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 300px;
+
+  font-size: 32px;
+  line-height: 39px;
+  font-weight: 500;
+  
+  background: #ebf0f3;
+}

@@ -33,9 +33,14 @@
           <img class="article__img" src="<?= $thumbnail_mobile; ?>" alt="<?= strip_tags( get_the_title( null ) ?? '' ); ?>">
         </picture>
       <?php else : ?>
-        <picture class="picture">
+        <!-- <picture class="picture">
           <img class="article__img" src="<?= NOT_FOUND; ?>" alt="<?= strip_tags( get_the_title( null ) ?? '' ); ?>">
-        </picture>
+        </picture> -->
+        <div class="plug">
+          <p>
+            <?= __( 'Страница на этапе разработки', 'osnova' ); ?>
+          </p>
+        </div>
       <?php endif; ?>  
 
       <div class="article__content">          
