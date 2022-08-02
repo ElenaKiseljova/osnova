@@ -9,6 +9,11 @@
   get_header(  );
 ?>
 
+<script>
+  window.productName = '<?= get_the_title(  ); ?>';
+  window.productLink = '<?= get_permalink(  ); ?>';
+</script>
+
 <?php 
   get_template_part( 'templates/product/start' );
 

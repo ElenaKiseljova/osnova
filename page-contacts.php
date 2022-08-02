@@ -143,8 +143,9 @@
   <section class="section feedback">
     <div class="container">
       <h2 class="feedback__title title"><?= $form_title?></h2>
-
-      <?= $form_shortcode; ?>
+      <div class="feedback__form">
+        <?= $form_shortcode; ?>
+      </div>      
     </div>
   </section>
 </main>

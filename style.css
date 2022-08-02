@@ -82,3 +82,7 @@ input[type=radio].visually-hidden {
   
   background: #ebf0f3;
 }
+
+.form__textarea--popup {
+  height: 35px;
+}

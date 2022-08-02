@@ -7,7 +7,7 @@
     ?>
     
     <div class="product__wrapper">
-      <div class="product__img">
+      <div class="product__img"> 
         <?php if ( has_post_thumbnail(  ) ) : ?>
           <?php 
             $thumbnail_desk = get_the_post_thumbnail_url( null, 'full' ) ?? NOT_FOUND;
@@ -33,11 +33,14 @@
           the_content(  );
         ?>
 
+        <button class="product__btn product__btn--mod"><?= __( 'ЗАКАЗАТЬ', 'osnova' ); ?></button>
       </div>
 
       <?php 
         get_template_part( 'templates/product/tags' );
       ?>
+
+      <button class="product__btn"><?= __( 'ЗАКАЗАТЬ', 'osnova' ); ?></button>
     </div>
   </div>
 </section>

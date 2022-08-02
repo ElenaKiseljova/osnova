@@ -154,18 +154,6 @@
   }
 
   /* ==============================================
-  ********  //Класс форм
-  =============================================== */
-  add_filter( 'wpcf7_form_class_attr', 'osnova_filter_cf7_class' );
-
-  function osnova_filter_cf7_class( $class ){
-    $class .= ' feedback__form form';
-    
-
-    return $class;
-  }
-
-  /* ==============================================
   ********  //Отключение автозаполнения полей CF7
   =============================================== */
   add_filter( 'wpcf7_form_elements', 'osnova_wpcf7_form_elements' );

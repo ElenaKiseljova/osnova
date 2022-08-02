@@ -42,6 +42,48 @@
         get_template_part( 'templates/contacts' );
       ?>           
     </div>
+    
+    <?php if (is_singular( 'products' )) : ?>
+      <div class="overlay"></div>
+      <div class="popup">
+        <div class="popup__container">
+          <button class="popup__close">
+            <svg class="popup__icon" width="17" height="17">
+              <use xlink:href="<?= get_template_directory_uri(  ); ?>/assets/img/sprite.svg#close"></use>
+            </svg>
+          </button>
+          <div class="popup__wrapper">
+            <h2 class="popup__title"><?= __( 'Оформить заказ', 'osnova' ); ?> </h2>
+            <p class="popup__text"><?= __( 'Оставьте заявку и наши специалисты свяжутся с вами в ближайшее время', 'osnova' ); ?></p>
+
+            <div class="form form--popup">
+              <?php 
+                if (function_exists( 'pll_current_language' )) {
+                  $cur_lang_code = pll_current_language();
+
+                  switch ($cur_lang_code) {
+                    case 'ua':
+                      echo do_shortcode( '[contact-form-7 id="2818" title="Заказать товар (UA)"]' );
+
+                      break;
+
+                    case 'ru':
+                      echo do_shortcode( '[contact-form-7 id="2817" title="Заказать товар (RU)"]' );
+
+                      break;
+                    
+                    default:
+                      echo do_shortcode( '[contact-form-7 id="2817" title="Заказать товар (RU)"]' );
+
+                      break;
+                  }
+                }
+              ?>
+            </div>
+          </div>
+        </div>
+      </div>
+    <?php endif; ?>    
   </footer>
 
   <?php

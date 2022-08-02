@@ -10,4 +10,6 @@
 <h2 class="form__title title"><?= $form_title; ?></h2>
 <p class="form__about"><?= $form_text; ?></p>
 
-<?= $form_shortcode; ?>
+<div class="form">
+  <?= $form_shortcode; ?>
+</div>

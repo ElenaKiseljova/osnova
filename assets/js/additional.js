@@ -1,53 +1,6 @@
 (() => {
   'use strict';
 
-  const cookieEdit = {
-    set(name, value, options = {}) {
-      options = {
-        path: '/',
-      }
-
-      if (options.expires instanceof Date) {
-        options.expires = options.expires.toUTCString();
-      }
-
-      let updatedCookie = encodeURIComponent(name) + '=' + value;
-
-      for (let optionKey in options) {
-        updatedCookie += '; ' + optionKey;
-        let optionValue = options[optionKey];
-        if (optionValue !== true) {
-          updatedCookie += '=' + optionValue;
-        }
-      }
-      document.cookie = updatedCookie;
-    },
-    get(name) {
-      let matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-      ));
-
-      return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
-  };
-
-  // Чекбокс в форме
-  const termsInput = document.querySelector('#terms');
-
-  if (termsInput) {
-    termsInput.addEventListener('change', () => {
-      const termsInputLabel = termsInput.closest('label');
-
-      if (termsInputLabel) {
-        if (termsInput.checked) {
-          termsInputLabel.classList.add('checked');
-        } else {
-          termsInputLabel.classList.remove('checked');
-        }
-      }
-    });
-  }
-
   // Кнопка "Подробнее" в Каталоге
   const deviceWidth = window.innerWidth && document.documentElement.clientWidth ?
     Math.min(window.innerWidth, document.documentElement.clientWidth) :
@@ -333,23 +286,42 @@
 
     additional.moreButton();
 
-    const tel = document.querySelector('#tel');
-    const itiSelectedDialCode = document.querySelector('.iti__selected-dial-code');
-    const fullTel = document.querySelector('#full-tel');
+    const forms = document.querySelectorAll('form');
 
-    if (tel && itiSelectedDialCode && fullTel) {
-      tel.addEventListener('input', (evt) => {
-        fullTel.value = itiSelectedDialCode.textContent + ' ' + tel.value;
-      });
-    }
+    if (forms.length > 0) {
+      forms.forEach((form) => {
+        const productNameField = form.querySelector('#product-name');
+        const productLinkField = form.querySelector('#product-link');
 
-    // Обработчик успешной отправки формы
-    const wpcf7Elms = document.querySelectorAll('.wpcf7');
+        const tel = form.querySelector('.tel');
+        const itiSelectedDialCode = form.querySelector('.iti__selected-dial-code');
+        const fullTel = form.querySelector('.full-tel');
 
-    if (wpcf7Elms.length > 0) {
-      wpcf7Elms.forEach(wpcf7Elm => {
-        //wpcf7submit
-        wpcf7Elm.addEventListener('wpcf7mailsent', (evt) => {
+        if (tel && itiSelectedDialCode && fullTel) {
+          tel.addEventListener('input', (evt) => {
+            fullTel.value = itiSelectedDialCode.textContent + ' ' + tel.value;
+          });
+        }
+
+        // Чекбокс в форме
+        const termsInput = form.querySelector('#terms');
+
+        if (termsInput) {
+          termsInput.addEventListener('change', () => {
+            const termsInputLabel = termsInput.closest('label');
+
+            if (termsInputLabel) {
+              if (termsInput.checked) {
+                termsInputLabel.classList.add('checked');
+              } else {
+                termsInputLabel.classList.remove('checked');
+              }
+            }
+          });
+        }
+
+        // Обработчик успешной отправки формы
+        form.addEventListener('wpcf7mailsent', (evt) => {
           if (termsInput) {
             const termsInputLabel = termsInput.closest('label');
 
@@ -362,20 +334,27 @@
             fullTel.value = '';
           }
         });
+
+        form.addEventListener('submit', (evt) => {
+          evt.preventDefault();
+
+          if (window.productName && window.productLink && productNameField && productLinkField) {
+            productNameField.value = window.productName.trim();
+            productLinkField.value = window.productLink.trim();
+          }
+        });
       });
     }
 
-    const gtranslate_wrapper = document.querySelectorAll('#gtranslate_wrapper a');
+    const gtranslate_wrapper = document.querySelector('#gtranslate_wrapper');
     const linkLangs = document.querySelectorAll('.lang__link');
 
-    if (gtranslate_wrapper.length > 0 && linkLangs.length > 0) {
+    if (gtranslate_wrapper && linkLangs.length > 0) {
       linkLangs.forEach((linkLang) => {
         linkLang.addEventListener('click', (evt) => {
           evt.preventDefault();
 
           let curLangCode = linkLang.dataset.text.toLowerCase().trim();
-
-          const curLink = [].find.call(gtranslate_wrapper, (a) => (a.textContent.toLowerCase().trim() === curLangCode));
 
           curLangCode = (curLang === 'ua') ? 'uk' : curLangCode;
 
