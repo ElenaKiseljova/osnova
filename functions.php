@@ -325,7 +325,7 @@
         'order' => $order,
         'orderby' => 'menu_order',
         'posts_per_page' => $posts_per_page,
-        'post__in' => $sticky_slice,
+        'post__in' => $sticky,
         'ignore_sticky_posts' => 1
       ];
     }

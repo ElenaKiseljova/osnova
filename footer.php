@@ -63,17 +63,17 @@
 
                   switch ($cur_lang_code) {
                     case 'ua':
-                      echo do_shortcode( '[contact-form-7 id="2818" title="Заказать товар (UA)"]' );
+                      echo do_shortcode( '[contact-form-7 id="2959" title="Заказать товар (UA)"]' );
 
                       break;
 
                     case 'ru':
-                      echo do_shortcode( '[contact-form-7 id="2817" title="Заказать товар (RU)"]' );
+                      echo do_shortcode( '[contact-form-7 id="2958" title="Заказать товар (RU)"]' );
 
                       break;
                     
                     default:
-                      echo do_shortcode( '[contact-form-7 id="2817" title="Заказать товар (RU)"]' );
+                      echo do_shortcode( '[contact-form-7 id="2958" title="Заказать товар (RU)"]' );
 
                       break;
                   }
