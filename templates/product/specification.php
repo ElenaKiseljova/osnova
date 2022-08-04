@@ -3,11 +3,11 @@
   $list = get_sub_field( 'list' ) ?? [];
 ?>
 
-<section class="section specification">
-  <div class="container specification__container">
-    <h2 class="specification__title title"><?= $title; ?></h2>
-
-    <?php if (!empty($list) && is_array($list) && !is_wp_error( $list )) : ?>
+<?php if (!empty($list) && is_array($list) && !is_wp_error( $list )) : ?>
+  <section class="section specification">
+    <div class="container specification__container">
+      <h2 class="specification__title title"><?= $title; ?></h2>
+    
       <ul class="products__list products__list--specification">
         <?php foreach ($list as $key => $item) : ?>
           <?php 
@@ -28,7 +28,7 @@
             </div>
           </li>
         <?php endforeach; ?>        
-      </ul>
-    <?php endif; ?>    
-  </div>
-</section>
+      </ul> 
+    </div>
+  </section>
+<?php endif; ?>

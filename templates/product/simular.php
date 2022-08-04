@@ -5,17 +5,17 @@
   $button = get_sub_field( 'button' ) ?? [];
 ?>
 
-<section class="section simular">
-  <div class="container">
-    <div class="simular__header">
-      <h2 class="simular__title title"><?= $title; ?></h2>
+<?php if (!empty($list) && is_array($list) && !is_wp_error( $list )) : ?>
+  <section class="section simular">
+    <div class="container">
+      <div class="simular__header">
+        <h2 class="simular__title title"><?= $title; ?></h2>
 
-      <?php if (!empty($button) && $button['text'] && !empty($button['text'])) : ?>
-        <a class="simular__btn simular__btn--desck" href="<?= $button['link']; ?>"><?= $button['text']; ?></a>
-      <?php endif; ?>      
-    </div>
+        <?php if (!empty($button) && $button['text'] && !empty($button['text'])) : ?>
+          <a class="simular__btn simular__btn--desck" href="<?= $button['link']; ?>"><?= $button['text']; ?></a>
+        <?php endif; ?>      
+      </div>
 
-    <?php if (!empty($list) && is_array($list) && !is_wp_error( $list )) : ?>
       <div class="simular__cover">
         <div class="swiper simular__swiper">
           <!-- Additional required wrapper -->
@@ -66,12 +66,12 @@
         <div class="slider__pagination slider__pagination--simular"></div>
 
       </div>
-    <?php endif; ?>
-    
-  </div>
+      
+    </div>
 
-  <?php if (!empty($button) && $button['text'] && !empty($button['text'])) : ?>
-    <a class="simular__btn" href="<?= $button['link']; ?>"><?= $button['text']; ?></a>
-  <?php endif; ?>  
+    <?php if (!empty($button) && $button['text'] && !empty($button['text'])) : ?>
+      <a class="simular__btn" href="<?= $button['link']; ?>"><?= $button['text']; ?></a>
+    <?php endif; ?>  
 
-</section>
+  </section>
+<?php endif; ?>

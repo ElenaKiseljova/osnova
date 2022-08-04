@@ -3,13 +3,13 @@
   $list = get_sub_field( 'list' ) ?? [];
 ?>
 
-<section class="section document">
-  <div class="container document__container">
-    <h2 class="document__title title">
-      <?= $title; ?>
-    </h2>
+<?php if (!empty($list) && is_array($list) && !is_wp_error( $list )) : ?>
+  <section class="section document">
+    <div class="container document__container">
+      <h2 class="document__title title">
+        <?= $title; ?>
+      </h2>
 
-    <?php if (!empty($list) && is_array($list) && !is_wp_error( $list )) : ?>
       <div class="swiper document__swiper">
         <div class="swiper-wrapper">
           <?php foreach ($list as $key => $item) : ?>
@@ -31,7 +31,7 @@
 
         </div>
       </div>
-    <?php endif; ?>   
 
-  </div>
-</section>
+    </div>
+  </section>
+<?php endif; ?>

@@ -1353,382 +1353,407 @@
 });
 document.addEventListener("DOMContentLoaded", function () {
 
-    (function ($) {
-        const rootElement = document.documentElement;
+  (function ($) {
+    const rootElement = document.documentElement;
 
-        let burger = document.querySelector(".burger");
-        let header = document.querySelector('.header');
-        let startScreen = document.querySelector('.js-main');
-        let menuFlag = false;
-        let btnOrder = document.querySelector(".product__btn");
-        let popupClose = document.querySelector(".popup__close");
-        let popup = document.querySelector(".popup");
-        let overlay = document.querySelector(".overlay");
+    let burger = document.querySelector(".burger");
+    let header = document.querySelector('.header');
+    let startScreen = document.querySelector('.js-main');
+    let menuFlag = false;
+    let btnOrder = document.querySelectorAll(".product__btn");
+    let popupClose = document.querySelectorAll(".popup__close");
+    let popup = document.querySelector(".popup");
+    let overlay = document.querySelector(".overlay");
 
-        if (burger) {
-            burger.addEventListener("click", () => {
-                if (!menuFlag) {
-                    rootElement.classList.add("block");
-                    burger.classList.add("clicked")
-                    header.classList.add("header--open");
-                    menuFlag = true;
-                } else {
-                    rootElement.classList.remove("block");
-                    header.classList.remove("header--open");
-                    burger.classList.remove("clicked");
-                    menuFlag = false;
-                }
-
-            })
-        }
-        if (btnOrder) {
-            btnOrder.addEventListener("click", () => {
-                popup.classList.add("popup__show");
-                rootElement.classList.add("block");
-                overlay.classList.add("active-overlay");
-            })
-            popupClose.addEventListener("click", () => {
-                popup.classList.remove("popup__show");
-                rootElement.classList.remove("block");
-                overlay.classList.remove("active-overlay");
-            })
+    if (burger) {
+      burger.addEventListener("click", () => {
+        if (!menuFlag) {
+          rootElement.classList.add("block");
+          burger.classList.add("clicked")
+          header.classList.add("header--open");
+          menuFlag = true;
+        } else {
+          rootElement.classList.remove("block");
+          header.classList.remove("header--open");
+          burger.classList.remove("clicked");
+          menuFlag = false;
         }
 
-        document.body.addEventListener('keyup', function (e) {
-            var key = e.keyCode;
-
-            if (key == 27) {
-                popup.classList.remove("popup__show");
-                rootElement.classList.remove("block");
-                overlay.classList.remove("active-overlay");
-
-            }
-        }, false);
-        window.addEventListener("click", (e) => {
-            let target = e.target;
-            if (target.classList.contains("active-overlay")) {
-                popup.classList.remove("popup__show");
-                rootElement.classList.remove("block");
-                overlay.classList.remove("active-overlay");
-            }
+      })
+    }
+    if (btnOrder) {
+      btnOrder.forEach((item) => {
+        item.addEventListener("click", () => {
+          popup.classList.add("popup__show");
+          rootElement.classList.add("block");
+          overlay.classList.add("active-overlay");
         })
-        let menuItems = document.querySelectorAll(".navigation__item.menu-item-has-children, .sub-menu__item.menu-item-has-children");
-        let headingFilter = document.querySelector(".heading__btn");
-        let filterContent = document.querySelector(".filter__wrapper");
-        let filterBtn = document.querySelector(".filter__btn");
-        headingFilter?.addEventListener("click", () => {
-            filterContent.classList.add("filter__wrapper--open")
-            rootElement.classList.add("block");
+      })
+      popupClose.forEach((item) => {
+        item.addEventListener("click", () => {
+          popup.classList.remove("popup__show");
+          rootElement.classList.remove("block");
+          overlay.classList.remove("active-overlay");
         })
-        filterBtn?.addEventListener("click", () => {
-            filterContent.classList.remove("filter__wrapper--open")
-            rootElement.classList.remove("block");
-        })
+      })
+    }
 
-        const setActiveFirstChild = (menuItem) => {
-            if (menuItem.classList.contains('navigation__item')) {
-                const firstChild = menuItem.querySelector('.menu-item-has-children');
+    document.body.addEventListener('keyup', function (e) {
+      var key = e.keyCode;
 
-                if (firstChild) {
-                    firstChild.classList.add('active');
-                }
-            }
-        };
+      if (key == 27) {
+        popup.classList.remove("popup__show");
+        rootElement.classList.remove("block");
+        overlay.classList.remove("active-overlay");
 
-        menuItems.forEach((menuItem) => {
-            if (document.documentElement.clientWidth < 992) {
-                const heightA = menuItem.querySelector('a').offsetHeight;
+      }
+    }, false);
+    window.addEventListener("click", (e) => {
+      let target = e.target;
+      if (target.classList.contains("active-overlay")) {
+        popup.classList.remove("popup__show");
+        rootElement.classList.remove("block");
+        overlay.classList.remove("active-overlay");
+      }
+    })
+    let menuItems = document.querySelectorAll(".navigation__item.menu-item-has-children, .sub-menu__item.menu-item-has-children");
+    let headingFilter = document.querySelector(".heading__btn");
+    let filterContent = document.querySelector(".filter__wrapper");
+    let filterBtn = document.querySelector(".filter__btn");
+    headingFilter?.addEventListener("click", () => {
+      filterContent.classList.add("filter__wrapper--open")
+      rootElement.classList.add("block");
+    })
+    filterBtn?.addEventListener("click", () => {
+      filterContent.classList.remove("filter__wrapper--open")
+      rootElement.classList.remove("block");
+    })
 
-                menuItem.style.height = heightA + 'px';
+    const setActiveFirstChild = (menuItem) => {
+      if (menuItem.classList.contains('navigation__item')) {
+        const firstChild = menuItem.querySelector('.menu-item-has-children');
 
-                menuItem.addEventListener("click", (evt) => {
-                    if (menuItem.classList.contains("open") && evt.target === menuItem) {
-                        menuItem.classList.remove("open");
+        if (firstChild) {
+          firstChild.classList.add('active');
+        }
+      }
+    };
 
-                        menuItem.style.height = heightA + 'px';
-                    } else if (!menuItem.classList.contains("open") && evt.target === menuItem) {
-                        menuItem.classList.add("open");
+    menuItems.forEach((menuItem) => {
+      if (document.documentElement.clientWidth < 992) {
+        const heightA = menuItem.querySelector('a').offsetHeight;
 
-                        menuItem.style.height = 'auto';
-                    }
-                });
-            } else {
-                setActiveFirstChild(menuItem);
+        menuItem.style.height = heightA + 'px';
 
-                menuItem.addEventListener("mouseenter", (evt) => {
-                    if (!menuItem.classList.contains("active") && evt.target === menuItem) {
-                        menuItem.classList.add("active");
-                    }
-                });
+        menuItem.addEventListener("click", (evt) => {
+          if (menuItem.classList.contains("open") && evt.target === menuItem) {
+            menuItem.classList.remove("open");
 
-                menuItem.addEventListener("mouseleave", (evt) => {
-                    if (menuItem.classList.contains("active") && evt.target === menuItem) {
-                        menuItem.classList.remove("active");
+            menuItem.style.height = heightA + 'px';
+          } else if (!menuItem.classList.contains("open") && evt.target === menuItem) {
+            menuItem.classList.add("open");
 
-                        setActiveFirstChild(menuItem);
-                    }
-                });
-            }
+            menuItem.style.height = 'auto';
+          }
+        });
+      } else {
+        setActiveFirstChild(menuItem);
+
+        menuItem.addEventListener("mouseenter", (evt) => {
+          if (!menuItem.classList.contains("active") && evt.target === menuItem) {
+            menuItem.classList.add("active");
+          }
         });
 
+        menuItem.addEventListener("mouseleave", (evt) => {
+          if (menuItem.classList.contains("active") && evt.target === menuItem) {
+            menuItem.classList.remove("active");
 
-        let filterArrow = document.querySelectorAll(".filter__arrow");
-        filterArrow.forEach((item, i) => {
-            item.addEventListener("click", () => {
-                item.classList.toggle("filter__arrow--open");
-                let filterWrap = document.querySelectorAll(".filter__wrap");
-                filterWrap.forEach((elem, j) => {
-                    if (i === j) {
-                        elem.classList.toggle("filter__wrap--open");
-                    }
-                })
-
-            })
-        })
-
-
-        // document.body.addEventListener('keyup', function (e) {
-        //     var key = e.keyCode;
-        //
-        //     if (key == 27 && headerSubList) {
-        //         headerSubList.forEach((item) => {
-        //             if (item.classList.contains("header__item--open")) {
-        //                 item.classList.remove("header__item--open")
-        //             }
-        //         })
-        //
-        //     }
-        //     ;
-        // }, false);
-
-        const accordionBittonClasses = ['.products__accordion'];
-        const accordionButtons = document.querySelectorAll(accordionBittonClasses.join(','));
-
-        accordionButtons.forEach((accordionButton, i) => {
-            const content = accordionButton.nextElementSibling;
-            const parentAccordion = accordionButton.parentNode;
-            if (content) {
-                const contentHeight = content.scrollHeight; //заменил offsetHeight на scrollHeight и начало нормально выщитывать
-
-                content.style.height = 0;
-
-                content.classList.add('changed');
-
-                accordionButton.addEventListener("click", () => {
-                    if (accordionButton.classList.contains('active')) {
-                        content.style.height = 0;
-                        accordionButton.classList.remove('active');
-                        parentAccordion.classList.remove("products__item--mod");
-
-                    } else {
-                        parentAccordion.classList.add("products__item--mod");
-                        content.style.height = contentHeight + 'px';
-                        accordionButton.classList.add('active');
-                    }
-                })
-            }
+            setActiveFirstChild(menuItem);
+          }
         });
+      }
+    });
 
-        // let openSlide = document.querySelectorAll(".");
-        // openSlide.forEach((item, i) => {
-        //     item.addEventListener("click", () => {
-        //
-        //         item.classList.toggle("--active");
-        //
-        //         // if( item.classList.contains("--active")){
-        //         //     let cover = document.querySelectorAll(".js-cover");
-        //         //     cover.forEach((elem,j)=>{
-        //         //         if(i===j){
-        //         //             elem.classList.add("js-cover--active");
-        //         //         }
-        //         //         else{
-        //         //             elem.classList.remove("js-cover--active");
-        //         //         }
-        //         //     })
-        //         // }
-        //     })
-        // })
 
-        const swiperFurniture = new Swiper(".furniture__swiper", {
-            spaceBetween: 10,
-            slidesPerView: 'auto',
-            pagination: {
-                el: ".slider__pagination--furniture",
-                type: "progressbar",
-            },
-            navigation: {
-                nextEl: ".slider__next",
-                prevEl: ".slider__prev",
-            },
-            breakpoints: {
-                768: {
-                    spaceBetween: 30
-                },
-                1200: {
-                    spaceBetween: 60
-                },
-            }
-        });
-
-        const swiperRecommendation = new Swiper(".recommendation__swiper", {
-            spaceBetween: 10,
-            slidesPerView: 'auto',
-            pagination: {
-                el: ".slider__pagination--recommendation",
-                type: "progressbar",
-            },
-            navigation: {
-                nextEl: ".slider__next--recommendation",
-                prevEl: ".slider__prev--recommendation",
-            },
-            breakpoints: {
-                768: {
-                    spaceBetween: 30
-                },
-                1200: {
-                    spaceBetween: 50
-                },
-            }
-        });
-
-        const swiperDocument = new Swiper(".document__swiper", {
-            spaceBetween: 20,
-            slidesPerView: 'auto',
-            pagination: {
-                el: ".slider__pagination--document",
-                type: "progressbar",
-            },
-            breakpoints: {
-                768: {
-                    spaceBetween: 30
-                },
-                1200: {
-                    spaceBetween: 40
-                },
-            }
+    let filterArrow = document.querySelectorAll(".filter__arrow");
+    filterArrow.forEach((item, i) => {
+      item.addEventListener("click", () => {
+        item.classList.toggle("filter__arrow--open");
+        let filterWrap = document.querySelectorAll(".filter__wrap");
+        filterWrap.forEach((elem, j) => {
+          if (i === j) {
+            elem.classList.toggle("filter__wrap--open");
+          }
         })
 
-        const swiperSimular = new Swiper(".simular__swiper", {
-            spaceBetween: 30,
-            slidesPerView: "auto",
-            pagination: {
-                el: ".slider__pagination--simular",
-                type: "progressbar",
-            },
-            navigation: {
-                nextEl: ".slider__next--simular",
-                prevEl: ".slider__prev--simular",
-            },
-            breakpoints: {
-                768: {
-                    spaceBetween: 60
-                },
-            }
+      })
+    })
+
+
+    // document.body.addEventListener('keyup', function (e) {
+    //     var key = e.keyCode;
+    //
+    //     if (key == 27 && headerSubList) {
+    //         headerSubList.forEach((item) => {
+    //             if (item.classList.contains("header__item--open")) {
+    //                 item.classList.remove("header__item--open")
+    //             }
+    //         })
+    //
+    //     }
+    //     ;
+    // }, false);
+
+    const accordionBittonClasses = ['.products__accordion'];
+    const accordionButtons = document.querySelectorAll(accordionBittonClasses.join(','));
+
+    accordionButtons.forEach((accordionButton, i) => {
+      const content = accordionButton.nextElementSibling;
+      const parentAccordion = accordionButton.parentNode;
+      if (content) {
+        const contentHeight = content.scrollHeight; //заменил offsetHeight на scrollHeight и начало нормально выщитывать
+
+        content.style.height = 0;
+
+        content.classList.add('changed');
+
+        accordionButton.addEventListener("click", () => {
+          if (accordionButton.classList.contains('active')) {
+            content.style.height = 0;
+            accordionButton.classList.remove('active');
+            parentAccordion.classList.remove("products__item--mod");
+
+          } else {
+            parentAccordion.classList.add("products__item--mod");
+            content.style.height = contentHeight + 'px';
+            accordionButton.classList.add('active');
+          }
         })
+      }
+    });
 
-        const swiperArticle = new Swiper(".article__swiper", {
-            spaceBetween: 15,
-            slidesPerView: "auto",
+    // let openSlide = document.querySelectorAll(".");
+    // openSlide.forEach((item, i) => {
+    //     item.addEventListener("click", () => {
+    //
+    //         item.classList.toggle("--active");
+    //
+    //         // if( item.classList.contains("--active")){
+    //         //     let cover = document.querySelectorAll(".js-cover");
+    //         //     cover.forEach((elem,j)=>{
+    //         //         if(i===j){
+    //         //             elem.classList.add("js-cover--active");
+    //         //         }
+    //         //         else{
+    //         //             elem.classList.remove("js-cover--active");
+    //         //         }
+    //         //     })
+    //         // }
+    //     })
+    // })
 
-            breakpoints: {
-                768: {
-                    spaceBetween: 16
-                },
-                1200: {
-                    spaceBetween: 20
-                },
-            },
-            pagination: {
-                el: ".slider__pagination--article",
-                type: "progressbar",
-            },
-            navigation: {
-                nextEl: ".slider__next--article",
-                prevEl: ".slider__prev--article",
-            },
-        })
+    const swiperFurniture = new Swiper(".furniture__swiper", {
+      spaceBetween: 10,
+      slidesPerView: 'auto',
+      pagination: {
+        el: ".slider__pagination--furniture",
+        type: "progressbar",
+      },
+      navigation: {
+        nextEl: ".slider__next",
+        prevEl: ".slider__prev",
+      },
+      breakpoints: {
+        768: {
+          spaceBetween: 30
+        },
+        1200: {
+          spaceBetween: 60
+        },
+      }
+    });
+
+    const swiperRecommendation = new Swiper(".recommendation__swiper", {
+      spaceBetween: 10,
+      slidesPerView: 'auto',
+      pagination: {
+        el: ".slider__pagination--recommendation",
+        type: "progressbar",
+      },
+      navigation: {
+        nextEl: ".slider__next--recommendation",
+        prevEl: ".slider__prev--recommendation",
+      },
+      breakpoints: {
+        768: {
+          spaceBetween: 30
+        },
+        1200: {
+          spaceBetween: 50
+        },
+      }
+    });
+
+    const swiperDocument = new Swiper(".document__swiper", {
+      spaceBetween: 20,
+      slidesPerView: 'auto',
+      pagination: {
+        el: ".slider__pagination--document",
+        type: "progressbar",
+      },
+      breakpoints: {
+        768: {
+          spaceBetween: 30
+        },
+        1200: {
+          spaceBetween: 40
+        },
+      }
+    })
+
+    const swiperSimular = new Swiper(".simular__swiper", {
+      spaceBetween: 30,
+      slidesPerView: "auto",
+      pagination: {
+        el: ".slider__pagination--simular",
+        type: "progressbar",
+      },
+      navigation: {
+        nextEl: ".slider__next--simular",
+        prevEl: ".slider__prev--simular",
+      },
+      breakpoints: {
+        768: {
+          spaceBetween: 60
+        },
+      }
+    })
+
+    const swiperArticle = new Swiper(".article__swiper", {
+      spaceBetween: 15,
+      slidesPerView: "auto",
+
+      breakpoints: {
+        768: {
+          spaceBetween: 16
+        },
+        1200: {
+          spaceBetween: 20
+        },
+      },
+      pagination: {
+        el: ".slider__pagination--article",
+        type: "progressbar",
+      },
+      navigation: {
+        nextEl: ".slider__next--article",
+        prevEl: ".slider__prev--article",
+      },
+    })
 
 
-        const videos = document.querySelectorAll('.video');
+    const videos = document.querySelectorAll('.video');
 
-        if (videos.length > 0) {
-            videos.forEach(video => {
-                const videoPlayButton = video.querySelector('.video__img');
-                const videoIframe = video.querySelector('iframe');
-                const videoTag = video.querySelector('video');
+    if (videos.length > 0) {
+      videos.forEach(video => {
+        const videoPlayButton = video.querySelector('.video__img');
+        const videoIframe = video.querySelector('iframe');
+        const videoTag = video.querySelector('video');
 
-                if (videoPlayButton) {
-                    if (videoIframe) {
-                        videoPlayButton.addEventListener('click', () => {
-                            const videoSrc = videoPlayButton.dataset.src;
+        if (videoPlayButton) {
+          if (videoIframe) {
+            videoPlayButton.addEventListener('click', () => {
+              const videoSrc = videoPlayButton.dataset.src;
 
-                            if (videoSrc) {
-                                videoIframe.src = videoSrc;
+              if (videoSrc) {
+                videoIframe.src = videoSrc;
 
-                                videoPlayButton.classList.add('hide');
-                            }
-                        });
-                    } else if (videoTag) {
-                        videoPlayButton.addEventListener('click', () => {
-                            videoTag.play();
-
-                            videoPlayButton.classList.add('hide');
-                        });
-                    }
-                }
+                videoPlayButton.classList.add('hide');
+              }
             });
-        }
+          } else if (videoTag) {
+            videoPlayButton.addEventListener('click', () => {
+              videoTag.play();
 
-        let input = document.querySelector("#tel");
-        window.intlTelInput(input, {
-            initialCountry: "auto",
-            placeholderNumberType: "MOBILE",
-            separateDialCode: true,
-            utilsScript: "js/utils.js",
-            geoIpLookup: function (success, failure) {
-                $.get("https://ipinfo.io", function () {
-                }, "jsonp").always(function (resp) {
-                    const countryCode = (resp && resp.country) ? resp.country : "us";
-                    success(countryCode);
-                });
-            },
-        });
-        let inputPopup = document.querySelector("#telpopup");
-        if (inputPopup) {
-            window.intlTelInput(inputPopup, {
-                initialCountry: "auto",
-                placeholderNumberType: "MOBILE",
-                separateDialCode: true,
-                utilsScript: "js/utils.js",
-                geoIpLookup: function (success, failure) {
-                    $.get("https://ipinfo.io", function () {
-                    }, "jsonp").always(function (resp) {
-                        const countryCode = (resp && resp.country) ? resp.country : "us";
-                        success(countryCode);
-                    });
-                },
+              videoPlayButton.classList.add('hide');
             });
+          }
         }
+      });
+    }
 
-        Fancybox.bind('[data-fancybox="gallery"]', {
-            caption: function (fancybox, carousel, slide) {
-                return (
-                    `${slide.index + 1} / ${carousel.slides.length} <br />` + slide.caption
-                );
-            },
+    let input = document.querySelector("#tel");
+    window.intlTelInput(input, {
+      initialCountry: "auto",
+      placeholderNumberType: "MOBILE",
+      separateDialCode: true,
+      utilsScript: "js/utils.js",
+      geoIpLookup: function (success, failure) {
+        $.get("https://ipinfo.io", function () {
+        }, "jsonp").always(function (resp) {
+          const countryCode = (resp && resp.country) ? resp.country : "us";
+          success(countryCode);
         });
+      },
+    });
+    let inputPopup = document.querySelector("#telpopup");
+    if (inputPopup) {
+      window.intlTelInput(inputPopup, {
+        initialCountry: "auto",
+        placeholderNumberType: "MOBILE",
+        separateDialCode: true,
+        utilsScript: "js/utils.js",
+        geoIpLookup: function (success, failure) {
+          $.get("https://ipinfo.io", function () {
+          }, "jsonp").always(function (resp) {
+            const countryCode = (resp && resp.country) ? resp.country : "us";
+            success(countryCode);
+          });
+        },
+      });
+    }
 
-        Fancybox.bind('[download]', {
-            caption: function (fancybox, carousel, slide) {
-                return (
-                    `${slide.index + 1} / ${carousel.slides.length} <br />` + slide.caption
-                );
-            },
-        });
-    }(jQuery));
+    Fancybox.bind('[data-fancybox="gallery"]', {
+      caption: function (fancybox, carousel, slide) {
+        return (
+          `${slide.index + 1} / ${carousel.slides.length} <br />` + slide.caption
+        );
+      },
+    });
+
+    Fancybox.bind('[download]', {
+      caption: function (fancybox, carousel, slide) {
+        return (
+          `${slide.index + 1} / ${carousel.slides.length} <br />` + slide.caption
+        );
+      },
+    });
+  }(jQuery));
 
 
 })
+
+window.addEventListener('load', () => {
+  const productTitle = document.querySelector('.product__title');
+  if (productTitle) {
+    const widthProductTitle = productTitle.offsetWidth;
+    const heightProductTitle = productTitle.offsetHeight;
+
+    const coeff = widthProductTitle / heightProductTitle;
+
+    const containerProductTitle = productTitle.parentNode;
+    const containerProductTitleWidth = containerProductTitle.offsetWidth;
+
+    productTitle.style.transform = `scale(${containerProductTitleWidth / widthProductTitle})`;
+
+    const newHeightProductTitle = containerProductTitleWidth / coeff;
+
+    productTitle.style.height = `${newHeightProductTitle}px`;
+
+    containerProductTitle.classList.add('changed');
+  }
+});
 document.addEventListener("DOMContentLoaded",(function(){console.log("DOM fully loaded and parsed")}));
 /**
  * Swiper 6.8.4

@@ -2011,6 +2011,9 @@ template {
   text-align: left;
   color: rgba(4, 13, 35, 0.5);
 }
+.breadcrumbs__item--current {
+  display: none;
+}
 .breadcrumbs__item--current span {
   font-family: "Montserrat", sans-serif;
   font-size: 12px;
@@ -2834,6 +2837,10 @@ template {
             flex: 0 0 310px;
   }
 }
+.recommendation__slide a:focus {
+  outline: none;
+  border: none;
+}
 .recommendation__img {
   width: 100%;
   height: 100%;
@@ -3473,6 +3480,12 @@ template {
 .form__btn--popup {
   background: #69CD72;
   color: #FFFFFF;
+  margin: 0 auto;
+}
+@media (min-width: 576px) {
+  .form__btn--popup {
+    margin: unset;
+  }
 }
 .form__graph {
   margin-top: 50px;
@@ -3599,6 +3612,23 @@ template {
     grid-column: 2 span;
   }
 }
+.product__about {
+  opacity: 0;
+  -webkit-transform: translateY(50px);
+      -ms-transform: translateY(50px);
+          transform: translateY(50px);
+}
+.product__about.changed {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+          transform: translateY(0);
+  -webkit-transition: opacity 0.5s, -webkit-transform 0.5s ease-in;
+  transition: opacity 0.5s, -webkit-transform 0.5s ease-in;
+  -o-transition: opacity 0.5s, transform 0.5s ease-in;
+  transition: opacity 0.5s, transform 0.5s ease-in;
+  transition: opacity 0.5s, transform 0.5s ease-in, -webkit-transform 0.5s ease-in;
+}
 @media (min-width: 768px) {
   .product__about {
     -ms-grid-row: 1;
@@ -3606,6 +3636,14 @@ template {
     grid-row: 1/3;
     width: 100%;
     max-width: 360px;
+    -webkit-transform: translateX(-100px);
+        -ms-transform: translateX(-100px);
+            transform: translateX(-100px);
+  }
+  .product__about.changed {
+    -webkit-transform: translateX(0);
+        -ms-transform: translateX(0);
+            transform: translateX(0);
   }
 }
 .product__about h2 {
@@ -3743,7 +3781,9 @@ template {
   text-align: left;
   color: #040D23;
 }
-.product__about p + p, .product__about p + ul, .product__about ul + p {
+.product__about p + p,
+.product__about p + ul,
+.product__about ul + p {
   margin-top: 10px;
 }
 .product__btn {
@@ -3804,6 +3844,9 @@ template {
   }
 }
 .product__title {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
   font-family: "Montserrat", sans-serif;
   font-size: 32px;
   font-weight: 600;
@@ -3814,6 +3857,9 @@ template {
   text-transform: uppercase;
   margin: 0;
   margin-bottom: 10px;
+  -webkit-transform-origin: top left;
+      -ms-transform-origin: top left;
+          transform-origin: top left;
 }
 @media (min-width: 768px) {
   .product__title {
@@ -3830,6 +3876,9 @@ template {
       flex-wrap: wrap;
   gap: 10px;
   margin-top: 30px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
 }
 @media (min-width: 768px) {
   .product__category {
@@ -3847,6 +3896,9 @@ template {
 .product__item {
   display: inline-block;
   position: relative;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   padding-right: 10px;
 }
 @media (min-width: 768px) {
@@ -4738,6 +4790,7 @@ template {
   }
 }
 .category__link {
+  display: block;
   text-decoration: none;
   position: relative;
   -webkit-transition: visibility 0.5s, max-height 0.5s, opacity 0.2s ease-in-out;
@@ -4931,7 +4984,40 @@ template {
     margin-top: 100px;
   }
 }
-.category__about p, .category__about ul, .category__about ol, .category__about h3, .category__about h4, .category__about h5, .category__about h6, .category__about strong {
+.category__about h1, .category__about h2, .category__about h3, .category__about h4, .category__about h5, .category__about h6 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #040D23;
+  margin-bottom: 20px;
+}
+.category__about h1 {
+  font-size: 14px;
+}
+.category__about h2 {
+  font-size: 13px;
+}
+.category__about h3 {
+  font-size: 12px;
+}
+.category__about h4 {
+  font-size: 11px;
+}
+.category__about h5 {
+  font-size: 10px;
+}
+.category__about h5 {
+  font-size: 10px;
+}
+.category__about h6 {
+  font-size: 9px;
+}
+.category__about ul, .category__about ol {
+  padding-left: 40px;
+}
+.category__about p, .category__about ul, .category__about ol, .category__about strong {
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-weight: 400;
@@ -7818,7 +7904,8 @@ img {
 .popup {
   width: 100%;
   max-width: 920px;
-  margin: 0 auto;
+  height: 100%;
+  margin: 10% auto;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -7828,6 +7915,26 @@ img {
   z-index: 20;
   padding: 0 10px;
   visibility: hidden;
+  overflow: auto;
+}
+@media (min-width: 360px) {
+  .popup {
+    margin: 15% auto;
+  }
+}
+@media (min-width: 460px) {
+  .popup {
+    margin: 20% auto;
+  }
+}
+@media (min-width: 576px) {
+  .popup {
+    margin: 0 auto;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
+    overflow: unset;
+  }
 }
 .popup__container {
   padding: 100px 10px;
