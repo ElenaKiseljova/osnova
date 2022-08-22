@@ -4986,33 +4986,39 @@ template {
 }
 .category__about h1, .category__about h2, .category__about h3, .category__about h4, .category__about h5, .category__about h6 {
   font-family: "Montserrat", sans-serif;
-  font-weight: 400;
-  line-height: 20px;
+  font-weight: 700;
   letter-spacing: 0em;
   text-align: left;
   color: #040D23;
   margin-bottom: 20px;
 }
 .category__about h1 {
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 24px;
 }
 .category__about h2 {
-  font-size: 13px;
+  font-size: 15px;
+  line-height: 22px;
 }
 .category__about h3 {
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 20px;
 }
 .category__about h4 {
+  font-size: 13px;
+  line-height: 18px;
+}
+.category__about h5 {
+  font-size: 12px;
+  line-height: 16px;
+}
+.category__about h5 {
   font-size: 11px;
-}
-.category__about h5 {
-  font-size: 10px;
-}
-.category__about h5 {
-  font-size: 10px;
+  line-height: 14px;
 }
 .category__about h6 {
-  font-size: 9px;
+  font-size: 10px;
+  line-height: 12px;
 }
 .category__about ul, .category__about ol {
   padding-left: 40px;
