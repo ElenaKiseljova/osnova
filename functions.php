@@ -104,6 +104,27 @@
     }  
   endif;
 
+  /********************************
+  ADD ADDITIONAL TOOLBAR SET TO ACF WYSIWYG
+  ********************************/
+  if ( function_exists( 'get_field' ) ) {
+    add_filter( 'acf/fields/wysiwyg/toolbars' , 'qd_toolbars'  );
+    function qd_toolbars( $toolbars )
+    {
+      //INJECT/ADD AN OPTION INTO THE FULL TOOLBAR
+      $toolbars['Full' ][1] = array_merge( array_slice( $toolbars['Full' ][1], 0, 3, true ), array( 'subscript','superscript' ), array_slice( $toolbars['Full' ][1], 3, null, true ) );
+
+      //FIND MORE INFO ABOUT THIS OPERATION AT http://www.advancedcustomfields.com/resources/customize-the-wysiwyg-toolbars/
+      // Add a new toolbar called "Very Simple"
+      // - this toolbar has only 1 row of buttons
+      // $toolbars['Very Simple' ] = array();
+      // $toolbars['Very Simple' ][1] = array('bold' , 'italic' , 'underline', 'link', 'unlink' );
+
+      // return $toolbars - IMPORTANT!
+      return $toolbars;
+    }
+  }
+
   /* ==============================================
   ********  //Фильтр polylang для добавления 
   ********  //перевоыдов непубликуемым таксономиям
